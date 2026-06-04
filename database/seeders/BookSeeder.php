@@ -185,7 +185,7 @@ class BookSeeder extends Seeder
 
         foreach ($books as $book) {
 
-            Book::create($book);
+            Book::firstOrCreate($book);
         }
     }
 }
