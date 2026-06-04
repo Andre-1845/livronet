@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             SchoolSeeder::class,
             BookSeeder::class,
+            UserSeeder::class,
 
         ]);
     }
