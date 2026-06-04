@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -57,5 +58,61 @@ class Book extends Model
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    protected function title(): Attribute
+    {
+        return Attribute::make(
+
+            set: fn ($value) => mb_convert_case(
+                trim($value),
+                MB_CASE_TITLE,
+                'UTF-8'
+            )
+        );
+    }
+
+    protected function author(): Attribute
+    {
+        return Attribute::make(
+
+            set: fn ($value) => mb_convert_case(
+                trim($value),
+                MB_CASE_TITLE,
+                'UTF-8'
+            )
+        );
+    }
+
+    protected function publisher(): Attribute
+    {
+        return Attribute::make(
+
+            set: fn ($value) => mb_convert_case(
+                trim($value),
+                MB_CASE_TITLE,
+                'UTF-8'
+            )
+        );
+    }
+
+    public function scopeForSale($query)
+    {
+        return $query->where('accept_sale', true);
+    }
+
+    public function scopeForTrade($query)
+    {
+        return $query->where('accept_trade', true);
+    }
+
+    public function scopeForDonation($query)
+    {
+        return $query->where('accept_donation', true);
+    }
+
+    public function scopeAvailable($query)
+    {
+        return $query->where('is_available', true);
     }
 }

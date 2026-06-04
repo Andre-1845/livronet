@@ -35,7 +35,7 @@ class SchoolSeeder extends Seeder
 
         foreach ($schools as $school) {
 
-            School::create($school);
+            School::firstOrCreate($school);
         }
     }
 }

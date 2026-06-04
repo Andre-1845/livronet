@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
+use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -16,6 +20,7 @@ class BookController extends Controller
             'user.city',
             'user.school',
         ]);
+        $query->available();
 
         if ($request->subject_id) {
 
@@ -40,37 +45,64 @@ class BookController extends Controller
 
         if ($request->accept_trade) {
 
-            $query->where('accept_trade', true);
+            $query->forTrade();
         }
 
         if ($request->accept_sale) {
 
-            $query->where('accept_sale', true);
+            $query->forSale();
         }
 
         if ($request->accept_donation) {
 
-            $query->where('accept_donation', true);
+            $query->forDonation();
         }
 
-        return $query
-            ->latest()
-            ->get();
+        if ($request->search) {
+
+            $query->where(function ($q) use ($request) {
+
+                $q->where(
+                    'title',
+                    'like',
+                    '%'.$request->search.'%'
+                )
+                    ->orWhere(
+                        'author',
+                        'like',
+                        '%'.$request->search.'%'
+                    )
+                    ->orWhere(
+                        'publisher',
+                        'like',
+                        '%'.$request->search.'%'
+                    );
+            });
+        }
+
+        if ($request->sort == 'price_asc') {
+            $query->orderBy('price', 'asc');
+        } elseif ($request->sort == 'price_desc') {
+            $query->orderBy('price', 'desc');
+        } else {
+            $query->latest();
+        }
+
+        return BookResource::collection(
+            $query
+                ->paginate(
+
+                    min(
+                        $request->get('page_size', 10),
+                        100
+                    )
+                )
+
+        );
     }
 
-    public function store(Request $request)
+    public function store(StoreBookRequest $request)
     {
-        $request->validate([
-
-            'title' => 'required',
-
-            'author' => 'required',
-
-            'subject_id' => 'required',
-
-            'image' => 'nullable|image|max:2048',
-
-        ]);
 
         $imagePath = null;
 
@@ -114,20 +146,22 @@ class BookController extends Controller
             'is_available' => true,
         ]);
 
-        return response()->json($book);
+        return new BookResource($book);
     }
 
     public function show(Book $book)
     {
-        return $book->load([
+        $book->load([
             'user',
             'subject',
             'user.city',
             'user.school',
         ]);
+
+        return new BookResource($book);
     }
 
-    public function update(Request $request, Book $book)
+    public function update(UpdateBookRequest $request, Book $book)
     {
         if ($book->user_id != auth()->id()) {
 
@@ -136,9 +170,31 @@ class BookController extends Controller
             ], 403);
         }
 
-        $book->update($request->all());
+        $data = $request->validated();
 
-        return response()->json($book);
+        if ($request->hasFile('image')) {
+
+            if ($book->image) {
+
+                Storage::disk('public')
+                    ->delete($book->image);
+            }
+
+            $data['image'] = $request
+                ->file('image')
+                ->store('books', 'public');
+        }
+
+        $book->update($data);
+
+        $book->load([
+            'user',
+            'subject',
+            'user.city',
+            'user.school',
+        ]);
+
+        return new BookResource($book);
     }
 
     public function destroy(Book $book)
@@ -148,6 +204,12 @@ class BookController extends Controller
             return response()->json([
                 'message' => 'Sem permissão',
             ], 403);
+        }
+
+        if ($book->image) {
+
+            Storage::disk('public')
+                ->delete($book->image);
         }
 
         $book->delete();

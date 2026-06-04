@@ -11,29 +11,32 @@ class SubjectSeeder extends Seeder
     {
         $subjects = [
 
-            'Matemática',
-            'Português',
-            'História',
-            'Geografia',
-            'Física',
-            'Química',
+            'Artes',
             'Biologia',
             'Ciências',
-            'Inglês',
-            'Filosofia',
-            'Sociologia',
-            'Artes',
+            'Desenho',
             'Educação Física',
-            'Literatura',
-            'Redação',
             'Espanhol',
+            'Filosofia',
+            'Física',
+            'Francês',
+            'Geografia',
+            'História',
             'Informática',
+            'Inglês',
+            'Literatura',
+            'Matemática',
+            'Música',
+            'Português',
+            'Química',
+            'Redação',
+            'Sociologia',
 
         ];
 
         foreach ($subjects as $subject) {
 
-            Subject::create([
+            Subject::firstOrCreate([
                 'name' => $subject,
             ]);
         }
