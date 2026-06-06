@@ -218,4 +218,24 @@ class BookController extends Controller
             'message' => 'Livro removido',
         ]);
     }
+
+    public function myBooks()
+{
+    $books = Book::with([
+        'user',
+        'subject',
+        'user.city',
+        'user.school',
+    ])
+    ->where(
+        'user_id',
+        auth()->id()
+    )
+    ->latest()
+    ->paginate(10);
+
+    return BookResource::collection(
+        $books
+    );
+}
 }
