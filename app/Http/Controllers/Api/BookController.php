@@ -90,14 +90,14 @@ class BookController extends Controller
         }
 
         return BookResource::collection(
-            $query
-                ->paginate(
+            $query->get()
+                // ->paginate(
 
-                    min(
-                        $request->get('page_size', 10),
-                        100
-                    )
-                )
+                //     min(
+                //         $request->get('page_size', 10),
+                //         100
+                //     )
+                // )
 
         );
     }
