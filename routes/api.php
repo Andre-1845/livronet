@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\GradeController;
 use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\SubjectController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::get('/schools', [SchoolController::class, 'index']);
 
 Route::get('/subjects', [SubjectController::class, 'index']);
 
+Route::get('/grades', [GradeController::class, 'index']);
+
 // ---------------- PROTECTED ROUTES ----------------
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -40,7 +43,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/books/{book}', [BookController::class, 'destroy']);
 
     Route::get(
-    '/my-books',
-    [BookController::class, 'myBooks']
-);
+        '/my-books',
+        [BookController::class, 'myBooks']
+    );
+
 });

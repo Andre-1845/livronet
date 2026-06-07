@@ -19,7 +19,7 @@ class Book extends Model
         'author',
         'publisher',
         'edition',
-        'school_grade',
+        'grade_id',
         'isbn',
 
         'price',
@@ -114,5 +114,10 @@ class Book extends Model
     public function scopeAvailable($query)
     {
         return $query->where('is_available', true);
+    }
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class);
     }
 }

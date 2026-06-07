@@ -17,6 +17,7 @@ class BookController extends Controller
         $query = Book::with([
             'user',
             'subject',
+            'grade',
             'user.city',
             'user.school',
         ]);
@@ -129,7 +130,7 @@ class BookController extends Controller
 
             'image' => $imagePath,
 
-            'school_grade' => $request->school_grade,
+            'grade_id' => $request->grade_id,
 
             'isbn' => $request->isbn,
 
@@ -154,6 +155,7 @@ class BookController extends Controller
         $book->load([
             'user',
             'subject',
+            'grade',
             'user.city',
             'user.school',
         ]);
@@ -190,6 +192,7 @@ class BookController extends Controller
         $book->load([
             'user',
             'subject',
+            'grade',
             'user.city',
             'user.school',
         ]);
@@ -220,22 +223,23 @@ class BookController extends Controller
     }
 
     public function myBooks()
-{
-    $books = Book::with([
-        'user',
-        'subject',
-        'user.city',
-        'user.school',
-    ])
-    ->where(
-        'user_id',
-        auth()->id()
-    )
-    ->latest()
-    ->paginate(10);
+    {
+        $books = Book::with([
+            'user',
+            'subject',
+            'grade',
+            'user.city',
+            'user.school',
+        ])
+            ->where(
+                'user_id',
+                auth()->id()
+            )
+            ->latest()
+            ->paginate(10);
 
-    return BookResource::collection(
-        $books
-    );
-}
+        return BookResource::collection(
+            $books
+        );
+    }
 }

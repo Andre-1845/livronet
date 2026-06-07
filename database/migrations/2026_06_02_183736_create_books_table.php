@@ -33,9 +33,6 @@ return new class extends Migration
             $table->string('edition')
                 ->nullable();
 
-            $table->string('school_grade')
-                ->nullable();
-
             $table->string('isbn')
                 ->nullable();
 
