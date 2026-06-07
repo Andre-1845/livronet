@@ -32,7 +32,7 @@ class StoreBookRequest extends FormRequest
 
             'edition' => 'nullable|string|max:50',
 
-            'school_grade' => 'nullable|string|max:100',
+            'grade_id' => 'nullable|exists:grades,id',
 
             'isbn' => 'nullable|string|max:50',
 

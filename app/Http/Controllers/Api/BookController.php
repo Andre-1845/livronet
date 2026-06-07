@@ -28,6 +28,11 @@ class BookController extends Controller
             $query->where('subject_id', $request->subject_id);
         }
 
+        if ($request->grade_id) {
+
+    $query->where('grade_id', $request->grade_id);
+}
+
         if ($request->city_id) {
 
             $query->whereHas('user', function ($q) use ($request) {
