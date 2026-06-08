@@ -89,12 +89,57 @@ class AuthController extends Controller
         ]);
     }
 
-    public function me(Request $request)
-    {
-        return response()->json(
-            $request->user()
-        );
-    }
+public function me(Request $request)
+{
+    $user = User::with([
+        'city',
+        'school',
+    ])->findOrFail(
+        $request->user()->id
+    );
+
+    return response()->json($user);
+}
+
+public function updateProfile(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+
+        'city_id' => 'nullable|exists:cities,id',
+
+        'school_id' => 'nullable|exists:schools,id',
+
+        'phone' => 'nullable|string|max:30',
+
+        'whatsapp' => 'nullable|string|max:30',
+
+        'instagram' => 'nullable|string|max:100',
+    ]);
+
+    $user = $request->user();
+
+    $user->update([
+        'name' => $request->name,
+
+        'city_id' => $request->city_id,
+
+        'school_id' => $request->school_id,
+
+        'phone' => $request->phone,
+
+        'whatsapp' => $request->whatsapp,
+
+        'instagram' => $request->instagram,
+    ]);
+
+    return response()->json(
+    User::with([
+        'city',
+        'school',
+    ])->findOrFail($user->id)
+);
+}
 
     public function logout(Request $request)
     {
