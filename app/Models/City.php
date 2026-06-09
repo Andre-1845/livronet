@@ -13,6 +13,7 @@ class City extends Model
     protected $fillable = [
         'name',
         'state',
+        'state_id',
     ];
 
     protected function name(): Attribute
@@ -26,15 +27,6 @@ class City extends Model
         );
     }
 
-    protected function state(): Attribute
-    {
-        return Attribute::make(
-            set: fn ($value) => strtoupper(
-                trim($value)
-            )
-        );
-    }
-
     public function schools()
     {
         return $this->hasMany(School::class);
@@ -44,4 +36,9 @@ class City extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function state()
+{
+    return $this->belongsTo(State::class);
+}
 }

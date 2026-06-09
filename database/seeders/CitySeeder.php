@@ -3,64 +3,43 @@
 namespace Database\Seeders;
 
 use App\Models\City;
+use App\Models\State;
 use Illuminate\Database\Seeder;
 
 class CitySeeder extends Seeder
 {
     public function run(): void
     {
-        $cities = [
+        $json = json_decode(
+            file_get_contents(
+                database_path('seeders/data/estados-cidades.json')
+            ),
+            true
+        );
 
-            [
-                'name' => 'Volta Redonda',
-                'state' => 'RJ',
-            ],
+        foreach ($json['estados'] as $estado) {
 
-            [
-                'name' => 'Brasilia',
-                'state' => 'DF',
-            ],
+            $state = State::where(
+                'uf',
+                $estado['sigla']
+            )->first();
 
-            [
-                'name' => 'Goiânia',
-                'state' => 'GO',
-            ],
+            if (!$state) {
+                continue;
+            }
 
-            [
-                'name' => 'Juiz de Fora',
-                'state' => 'MG',
-            ],
+            foreach ($estado['cidades'] as $cidade) {
 
-            [
-                'name' => 'Belo Horizonte',
-                'state' => 'MG',
-            ],
-
-            [
-                'name' => 'Rio de Janeiro',
-                'state' => 'RJ',
-            ],
-
-            [
-                'name' => 'São Paulo',
-                'state' => 'SP',
-            ],
-
-            [
-                'name' => 'Barra Mansa',
-                'state' => 'RJ',
-            ],
-
-            [
-                'name' => 'Resende',
-                'state' => 'RJ',
-            ],
-
-        ];
-
-        foreach ($cities as $city) {
-
-            City::firstOrCreate($city);
+                City::updateOrCreate(
+                    [
+                        'name' => $cidade,
+                        'state' => $estado['sigla'],
+                    ],
+                    [
+                        'state_id' => $state->id,
+                    ]
+                );
+            }
         }
     }
 }
