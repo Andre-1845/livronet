@@ -3,9 +3,10 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\StateController;
 use App\Http\Controllers\Api\GradeController;
-use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\SubjectController;
+use App\Http\Controllers\Api\SchoolController;
 use Illuminate\Support\Facades\Route;
 
 // ---------------- AUTH ----------------
@@ -27,6 +28,8 @@ Route::get('/schools', [SchoolController::class, 'index']);
 Route::get('/subjects', [SubjectController::class, 'index']);
 
 Route::get('/grades', [GradeController::class, 'index']);
+
+Route::get('/states', [StateController::class, 'index']);
 
 // ---------------- PROTECTED ROUTES ----------------
 

@@ -12,7 +12,7 @@ class SchoolController extends Controller
     {
         $query = School::query();
 
-        if ($request->city_id) {
+        if ($request->filled('city_id')) {
 
             $query->where('city_id', $request->city_id);
         }

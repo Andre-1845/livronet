@@ -10,9 +10,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             StateSeeder::class,
+            CitySeeder::class,
             GradeSeeder::class,
             SubjectSeeder::class,
-            CitySeeder::class,
             SchoolSeeder::class,
             UserSeeder::class,
             BookSeeder::class,
