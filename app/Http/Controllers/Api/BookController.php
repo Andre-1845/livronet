@@ -30,8 +30,8 @@ class BookController extends Controller
 
         if ($request->grade_id) {
 
-    $query->where('grade_id', $request->grade_id);
-}
+            $query->where('grade_id', $request->grade_id);
+        }
 
         if ($request->city_id) {
 
@@ -94,16 +94,13 @@ class BookController extends Controller
             $query->latest();
         }
 
+        $pageSize = min(
+            $request->query('page_size', 15),
+            100
+        );
+
         return BookResource::collection(
-            $query->get()
-                // ->paginate(
-
-                //     min(
-                //         $request->get('page_size', 10),
-                //         100
-                //     )
-                // )
-
+            $query->paginate($pageSize)
         );
     }
 
