@@ -21,4 +21,46 @@ class SchoolController extends Controller
             ->orderBy('name')
             ->get();
     }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'city_id' => [
+                'required',
+                'exists:cities,id',
+            ],
+
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+        ]);
+
+        $existing = School::query()
+            ->where('city_id', $validated['city_id'])
+            ->whereRaw(
+                'LOWER(name) = ?',
+                [mb_strtolower($validated['name'])]
+            )
+            ->first();
+
+        if ($existing) {
+
+            return response()->json([
+                'message' => 'Escola já cadastrada',
+                'school' => $existing,
+            ], 409);
+        }
+
+        $school = School::create([
+            'city_id' => $validated['city_id'],
+            'name' => $validated['name'],
+        ]);
+
+        return response()->json(
+            $school,
+            201
+        );
+    }
 }

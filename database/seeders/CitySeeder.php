@@ -24,7 +24,7 @@ class CitySeeder extends Seeder
                 $estado['sigla']
             )->first();
 
-            if (!$state) {
+            if (! $state) {
                 continue;
             }
 

@@ -3,10 +3,10 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CityController;
-use App\Http\Controllers\Api\StateController;
 use App\Http\Controllers\Api\GradeController;
-use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\SchoolController;
+use App\Http\Controllers\Api\StateController;
+use App\Http\Controllers\Api\SubjectController;
 use Illuminate\Support\Facades\Route;
 
 // ---------------- AUTH ----------------
@@ -24,6 +24,8 @@ Route::get('/books/{book}', [BookController::class, 'show']);
 Route::get('/cities', [CityController::class, 'index']);
 
 Route::get('/schools', [SchoolController::class, 'index']);
+
+Route::post('/schools', [SchoolController::class, 'store']);
 
 Route::get('/subjects', [SubjectController::class, 'index']);
 

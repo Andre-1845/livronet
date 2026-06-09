@@ -10,25 +10,25 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::table('cities', function (Blueprint $table) {
+    {
+        Schema::table('cities', function (Blueprint $table) {
 
-        $table->foreignId('state_id')
-            ->nullable()
-            ->after('id')
-            ->constrained()
-            ->nullOnDelete();
-    });
-}
+            $table->foreignId('state_id')
+                ->nullable()
+                ->after('id')
+                ->constrained()
+                ->nullOnDelete();
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
-   public function down(): void
-{
-    Schema::table('cities', function (Blueprint $table) {
+    public function down(): void
+    {
+        Schema::table('cities', function (Blueprint $table) {
 
-        $table->dropConstrainedForeignId('state_id');
-    });
-}
+            $table->dropConstrainedForeignId('state_id');
+        });
+    }
 };
