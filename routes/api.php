@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\GradeController;
 use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\StateController;
 use App\Http\Controllers\Api\SubjectController;
+use App\Http\Controllers\Api\FavoriteController;
 use Illuminate\Support\Facades\Route;
 
 // ---------------- AUTH ----------------
@@ -53,5 +54,20 @@ Route::middleware('auth:sanctum')->group(function () {
         '/my-books',
         [BookController::class, 'myBooks']
     );
+
+    Route::post(
+    '/favorites/{book}',
+    [FavoriteController::class, 'store']
+);
+
+Route::delete(
+    '/favorites/{book}',
+    [FavoriteController::class, 'destroy']
+);
+
+Route::get(
+    '/favorites',
+    [FavoriteController::class, 'index']
+);
 
 });

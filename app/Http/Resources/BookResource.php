@@ -66,6 +66,12 @@ class BookResource extends JsonResource
                 'instagram' => $this->user->instagram,
             ],
 
+            'is_favorite' => auth()->check()
+    ? $this->favoritedBy()
+        ->where('user_id', auth()->id())
+        ->exists()
+    : false,
+
         ];
     }
 }

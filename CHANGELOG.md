@@ -96,3 +96,19 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 - Seleção automática de escola existente ao detectar duplicidade.
 - Busca textual por título, autor e editora.
 - Ordenação por preço e data de publicação.
+
+### v0.3.1
+
+#### Flutter
+
+- Implementação da edição de livros utilizando a mesma tela de cadastro.
+- Inclusão de updateBook() no Repository e Provider.
+- Preenchimento automático de disciplina e série durante a edição.
+- Atualização automática da lista após edição.
+- Evolução do BookModel para suportar GradeModel completo.
+- Correção da exibição da série nos cards de livros.
+
+#### Correções
+
+- Correção da exibição "Instance of GradeModel".
+- Ajustes de compatibilidade entre cadastro e edição de livros.
