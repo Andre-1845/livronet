@@ -112,3 +112,24 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 
 - Correção da exibição "Instance of GradeModel".
 - Ajustes de compatibilidade entre cadastro e edição de livros.
+
+## [0.3.0] - 2026-06-12 Backend (LARAVEL)
+
+### Added
+
+- Sistema de favoritos para livros.
+- Endpoint para favoritar livros.
+- Endpoint para remover favoritos.
+- Endpoint para listar favoritos do usuário autenticado.
+- Campo `is_favorite` retornado pela API de livros.
+
+### Changed
+
+- Endpoints de listagem e detalhes de livros passaram a exigir autenticação.
+- Melhorias na serialização de livros para exibir corretamente o status de favorito.
+
+### Fixed
+
+- Correção da identificação de favoritos na listagem geral de livros.
+- Correção do carregamento do usuário autenticado nos recursos de livros.
+- Ajustes de consistência entre `/books` e `/favorites`.
