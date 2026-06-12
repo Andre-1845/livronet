@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\GradeController;
+use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\StateController;
 use App\Http\Controllers\Api\SubjectController;
@@ -68,6 +69,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get(
         '/favorites',
         [FavoriteController::class, 'index']
+    );
+
+    Route::get(
+        '/messages',
+        [MessageController::class, 'index']
+    );
+
+    Route::get(
+        '/messages/{book}/{user}',
+        [MessageController::class, 'show']
+    );
+
+    Route::post(
+        '/messages',
+        [MessageController::class, 'store']
     );
 
 });

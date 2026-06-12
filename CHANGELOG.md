@@ -2,6 +2,8 @@
 
 Todas as alterações relevantes do projeto LivroNet serão registradas neste arquivo.
 
+---
+
 ## v0.2.0 - 2026-06-07
 
 ### Flutter
@@ -36,6 +38,8 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 - Recuperação de senha.
 - Confirmação de e-mail.
 
+---
+
 ## v0.3.0 - 2026-06-11
 
 ### Flutter
@@ -67,7 +71,7 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 ### Laravel
 
 - Inclusão de filtro por state_id no endpoint de listagem de livros.
-- Otimização das consultas relacionadas a localização dos usuários.
+- Otimização das consultas relacionadas à localização dos usuários.
 - Ajustes para suportar filtros avançados combinados.
 
 ### Correções
@@ -97,9 +101,11 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 - Busca textual por título, autor e editora.
 - Ordenação por preço e data de publicação.
 
-### v0.3.1
+---
 
-#### Flutter
+## v0.3.1 - 2026-06-11
+
+### Flutter
 
 - Implementação da edição de livros utilizando a mesma tela de cadastro.
 - Inclusão de updateBook() no Repository e Provider.
@@ -108,28 +114,90 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 - Evolução do BookModel para suportar GradeModel completo.
 - Correção da exibição da série nos cards de livros.
 
-#### Correções
+### Correções
 
 - Correção da exibição "Instance of GradeModel".
 - Ajustes de compatibilidade entre cadastro e edição de livros.
 
-## [0.3.0] - 2026-06-12 Backend (LARAVEL)
+---
 
-### Added
+## v0.4.0 - 2026-06-12
 
-- Sistema de favoritos para livros.
+### Flutter
+
+#### Favoritos
+
+- Implementação da tela de Favoritos.
+- Criação de FavoriteProvider.
+- Criação de FavoriteRepository.
+- Navegação para Favoritos pela AppBar principal.
+- Atualização automática do estado dos favoritos entre telas.
+- Sincronização da lista de favoritos após inclusão e remoção.
+
+#### Interface e Branding
+
+- Alteração do nome do aplicativo para LivroNet.
+- Inclusão do logotipo oficial do projeto.
+- Geração dos ícones Android.
+- Geração dos ícones iOS.
+- Inclusão dos assets de identidade visual.
+- Preparação da estrutura para Splash Screen.
+
+### Laravel
+
+#### Sistema de Favoritos
+
+- Criação da tabela favorites.
+- Implementação do relacionamento User ↔ Book para favoritos.
+- Criação do FavoriteController.
 - Endpoint para favoritar livros.
 - Endpoint para remover favoritos.
 - Endpoint para listar favoritos do usuário autenticado.
-- Campo `is_favorite` retornado pela API de livros.
+- Inclusão do campo is_favorite na API de livros.
+- Inclusão do carregamento do relacionamento favoritedBy.
 
-### Changed
+#### Segurança
 
-- Endpoints de listagem e detalhes de livros passaram a exigir autenticação.
-- Melhorias na serialização de livros para exibir corretamente o status de favorito.
+- Proteção dos endpoints de livros com autenticação Sanctum.
+- Padronização do acesso autenticado aos recursos do sistema.
 
-### Fixed
+### Correções
+
+#### Favoritos
 
 - Correção da identificação de favoritos na listagem geral de livros.
-- Correção do carregamento do usuário autenticado nos recursos de livros.
-- Ajustes de consistência entre `/books` e `/favorites`.
+- Correção da sincronização entre os endpoints /books e /favorites.
+- Correção da atualização visual dos favoritos após navegação entre telas.
+- Correção da identificação do usuário autenticado nos recursos BookResource.
+
+#### Arquitetura
+
+- Ajustes no carregamento de relacionamentos para evitar inconsistências de favoritos.
+- Melhor organização dos Providers relacionados à navegação principal.
+
+### Backlog Atualizado
+
+#### Alta Prioridade
+
+- Sistema de mensagens entre usuários.
+- Splash Screen.
+- Disclaimer inicial de uso e segurança.
+- Upload de imagens dos livros.
+
+#### Média Prioridade
+
+- Recuperação de senha.
+- Confirmação de e-mail.
+- Persistência dos filtros ao reabrir a tela.
+- Chips de filtros ativos.
+- Busca textual por título, autor e editora.
+- Ordenação por preço e data.
+
+#### Evoluções Futuras
+
+- Infinite Scroll.
+- Notificações.
+- Denúncia de usuários.
+- Bloqueio de usuários.
+- Histórico de conversas.
+- Avaliação de usuários.
