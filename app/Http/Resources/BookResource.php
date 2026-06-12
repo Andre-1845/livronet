@@ -67,10 +67,8 @@ class BookResource extends JsonResource
             ],
 
             'is_favorite' => $request->user()
-    ? $this->favoritedBy->contains(
-        $request->user()->id
-    )
-    : false,
+                 ? $this->favoritedBy->contains('id', $request->user()->id)
+                 : false,
 
         ];
     }

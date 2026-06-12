@@ -18,10 +18,6 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // ---------------- PUBLIC ROUTES ----------------
 
-Route::get('/books', [BookController::class, 'index']);
-
-Route::get('/books/{book}', [BookController::class, 'show']);
-
 Route::get('/cities', [CityController::class, 'index']);
 
 Route::get('/schools', [SchoolController::class, 'index']);
@@ -37,6 +33,10 @@ Route::get('/states', [StateController::class, 'index']);
 // ---------------- PROTECTED ROUTES ----------------
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/books', [BookController::class, 'index']);
+
+    Route::get('/books/{book}', [BookController::class, 'show']);
 
     Route::get('/me', [AuthController::class, 'me']);
 
