@@ -20,6 +20,7 @@ class BookController extends Controller
             'grade',
             'user.city',
             'user.school',
+            'favoritedBy',
         ]);
         $query->available();
 
@@ -168,6 +169,7 @@ class BookController extends Controller
             'grade',
             'user.city',
             'user.school',
+            'favoritedBy',
         ]);
 
         return new BookResource($book);
@@ -205,6 +207,7 @@ class BookController extends Controller
             'grade',
             'user.city',
             'user.school',
+            'favoritedBy',
         ]);
 
         return new BookResource($book);
@@ -240,6 +243,7 @@ class BookController extends Controller
             'grade',
             'user.city',
             'user.school',
+            'favoritedBy',
         ])
             ->where(
                 'user_id',

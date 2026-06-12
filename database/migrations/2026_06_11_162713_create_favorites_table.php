@@ -10,26 +10,26 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('favorites', function (Blueprint $table) {
-        $table->id();
+    {
+        Schema::create('favorites', function (Blueprint $table) {
+            $table->id();
 
-        $table->foreignId('user_id')
-            ->constrained()
-            ->cascadeOnDelete();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
-        $table->foreignId('book_id')
-            ->constrained()
-            ->cascadeOnDelete();
+            $table->foreignId('book_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
-        $table->timestamps();
+            $table->timestamps();
 
-        $table->unique([
-            'user_id',
-            'book_id'
-        ]);
-    });
-}
+            $table->unique([
+                'user_id',
+                'book_id',
+            ]);
+        });
+    }
 
     /**
      * Reverse the migrations.

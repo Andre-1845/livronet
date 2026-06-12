@@ -17,7 +17,7 @@ class FavoriteController extends Controller
                 'user.city.state',
                 'user.school',
                 'subject',
-                'grade'
+                'grade',
             ])
             ->latest()
             ->paginate(10);
@@ -32,12 +32,11 @@ class FavoriteController extends Controller
         $request->user()
             ->favoriteBooks()
             ->syncWithoutDetaching([
-                $book->id
+                $book->id,
             ]);
 
         return response()->json([
-            'message' =>
-                'Livro adicionado aos favoritos'
+            'message' => 'Livro adicionado aos favoritos',
         ]);
     }
 
@@ -50,8 +49,7 @@ class FavoriteController extends Controller
             ->detach($book->id);
 
         return response()->json([
-            'message' =>
-                'Livro removido dos favoritos'
+            'message' => 'Livro removido dos favoritos',
         ]);
     }
 }

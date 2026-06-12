@@ -3,11 +3,11 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\GradeController;
 use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\StateController;
 use App\Http\Controllers\Api\SubjectController;
-use App\Http\Controllers\Api\FavoriteController;
 use Illuminate\Support\Facades\Route;
 
 // ---------------- AUTH ----------------
@@ -56,18 +56,18 @@ Route::middleware('auth:sanctum')->group(function () {
     );
 
     Route::post(
-    '/favorites/{book}',
-    [FavoriteController::class, 'store']
-);
+        '/favorites/{book}',
+        [FavoriteController::class, 'store']
+    );
 
-Route::delete(
-    '/favorites/{book}',
-    [FavoriteController::class, 'destroy']
-);
+    Route::delete(
+        '/favorites/{book}',
+        [FavoriteController::class, 'destroy']
+    );
 
-Route::get(
-    '/favorites',
-    [FavoriteController::class, 'index']
-);
+    Route::get(
+        '/favorites',
+        [FavoriteController::class, 'index']
+    );
 
 });
