@@ -25,3 +25,6 @@ Thumbs.db
 *.sqlite
 livronet
 estrutura_backend.txt
+.env
+error_log
+/storage/logs/*
