@@ -152,13 +152,9 @@
         <div class="logo">
 
             {{-- Opção 1: logo hospedada no Laravel --}}
-            <img src="{{ asset('images/livronet-logo-horizontal.png') }}"
+            <img src="{{ asset('images/livronet_logo_horizontal.png') }}"
                  alt="LivroNet">
 
-            {{-- Caso ainda não tenha colocado a imagem em public/images,
-                 substitua temporariamente por um texto:
-                 <h2>LivroNet</h2>
-            --}}
 
         </div>
 
@@ -181,12 +177,13 @@
 
         </div>
 
-        <a href="https://livronet.org"
+        {{-- <a href="https://livronet.org"
            class="btn">
+
 
             Voltar ao LivroNet
 
-        </a>
+        </a> --}}
 
     </div>
 
