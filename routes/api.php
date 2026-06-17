@@ -18,6 +18,8 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+
 // ---------------- PUBLIC ROUTES ----------------
 
 Route::get('/cities', [CityController::class, 'index']);
