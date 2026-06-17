@@ -42,6 +42,8 @@ class AuthController extends Controller
 
         ]);
 
+        $user->sendEmailVerificationNotification();
+
         $token = $user
             ->createToken('livronet')
             ->plainTextToken;
@@ -51,6 +53,10 @@ class AuthController extends Controller
             'user' => $user,
 
             'token' => $token,
+
+            'email_verification_required' => true,
+
+            'message' => 'E-mail de confirmação enviado.',
 
         ]);
     }
