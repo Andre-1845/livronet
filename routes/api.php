@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\StateController;
 use App\Http\Controllers\Api\SubjectController;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 // ---------------- AUTH ----------------
@@ -85,5 +86,22 @@ Route::middleware('auth:sanctum')->group(function () {
         '/messages',
         [MessageController::class, 'store']
     );
+// Temporaria
+    Route::get('/test-mail', function () {
+
+    Mail::raw(
+        'Teste de envio do LivroNet',
+        function ($message) {
+            $message
+                ->to('SEU_EMAIL_PESSOAL@gmail.com')
+                ->subject('Teste SMTP LivroNet');
+        }
+    );
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Email enviado'
+    ]);
+});
 
 });
