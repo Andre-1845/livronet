@@ -91,4 +91,9 @@ Route::get(
         [AuthController::class, 'emailStatus']
     );
 
+    Route::post(
+    '/email-resend',
+    [AuthController::class, 'resendVerificationEmail']
+);
+
 });

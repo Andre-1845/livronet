@@ -61,6 +61,24 @@ class AuthController extends Controller
         ]);
     }
 
+    public function resendVerificationEmail(Request $request)
+{
+    $user = $request->user();
+
+    if ($user->hasVerifiedEmail()) {
+
+        return response()->json([
+            'message' => 'E-mail já confirmado.'
+        ]);
+    }
+
+    $user->sendEmailVerificationNotification();
+
+    return response()->json([
+        'message' => 'E-mail reenviado com sucesso.'
+    ]);
+}
+
     public function login(Request $request)
     {
         $request->validate([
