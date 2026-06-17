@@ -86,22 +86,9 @@ Route::middleware('auth:sanctum')->group(function () {
         '/messages',
         [MessageController::class, 'store']
     );
-// Temporaria
-    Route::get('/test-mail', function () {
-
-    Mail::raw(
-        'Teste de envio do LivroNet',
-        function ($message) {
-            $message
-                ->to('SEU_EMAIL_PESSOAL@gmail.com')
-                ->subject('Teste SMTP LivroNet');
-        }
+Route::get(
+        '/email-status',
+        [AuthController::class, 'emailStatus']
     );
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Email enviado'
-    ]);
-});
 
 });

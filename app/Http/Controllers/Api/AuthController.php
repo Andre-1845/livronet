@@ -159,4 +159,15 @@ class AuthController extends Controller
 
         ]);
     }
+
+    public function emailStatus(Request $request)
+{
+    return response()->json([
+        'email_verified' =>
+            ! is_null(
+                $request->user()
+                    ->email_verified_at
+            ),
+    ]);
+}
 }
