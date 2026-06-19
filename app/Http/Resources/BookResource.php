@@ -57,6 +57,8 @@ class BookResource extends JsonResource
 
                 'name' => $this->user->name,
 
+                'email' => $this->user->email,
+
                 'city' => $this->user->city?->name,
 
                 'school' => $this->user->school?->name,
