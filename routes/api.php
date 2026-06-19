@@ -46,6 +46,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::put('/me', [AuthController::class, 'updateProfile']);
 
+    Route::post('/change-email', [AuthController::class, 'changeEmail']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::post('/books', [BookController::class, 'store']);

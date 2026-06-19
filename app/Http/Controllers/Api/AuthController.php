@@ -212,4 +212,44 @@ public function forgotPassword(Request $request)
     ], 422);
 }
 
+public function changeEmail(Request $request)
+{
+    $request->validate([
+
+        'email' => 'required|email|unique:users,email',
+
+        'password' => 'required',
+
+    ]);
+
+    $user = $request->user();
+
+    if (! Hash::check(
+        $request->password,
+        $user->password
+    )) {
+
+        return response()->json([
+            'message' => 'Senha atual inválida.'
+        ], 422);
+    }
+
+    $user->update([
+
+        'email' => $request->email,
+
+        'email_verified_at' => null,
+
+    ]);
+
+    $user->sendEmailVerificationNotification();
+
+    return response()->json([
+
+        'message' =>
+            'E-mail alterado com sucesso. Uma nova confirmação foi enviada.',
+
+    ]);
+}
+
 }
