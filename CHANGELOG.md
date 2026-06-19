@@ -201,3 +201,107 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 - Bloqueio de usuários.
 - Histórico de conversas.
 - Avaliação de usuários.
+
+## v0.5.0 - 2026-06-18
+
+### Flutter
+
+#### Splash Screen e Onboarding
+
+- Implementação da Splash Screen do LivroNet.
+- Inclusão da identidade visual do aplicativo na inicialização.
+- Implementação da tela de Disclaimer.
+- Persistência local do aceite do Disclaimer.
+- Integração do fluxo Splash → Disclaimer → Login.
+
+#### Arquitetura
+
+- Criação do AppConfig.
+- Criação do AppColors.
+- Criação do AppTheme.
+- Organização da estrutura de configuração e temas do aplicativo.
+
+#### Mensagens
+
+- Criação dos modelos ConversationModel e MessageModel.
+- Criação do MessageProvider.
+- Criação do MessageRepository.
+- Implementação inicial das telas de conversas e chat.
+- Preparação da arquitetura para o módulo de mensagens.
+
+#### Branding
+
+- Atualização dos assets do aplicativo.
+- Ajustes de identidade visual Android.
+- Ajustes de identidade visual iOS.
+
+---
+
+## v0.6.0 - 2026-06-18
+
+### Verificação de E-mail
+
+- Implementação do fluxo de confirmação de e-mail.
+- Integração com backend Laravel.
+- Implementação do endpoint de reenvio de confirmação.
+- Controle de acesso baseado em e-mail verificado.
+
+### Recuperação de Senha
+
+- Implementação do fluxo "Esqueci minha senha".
+- Integração com recuperação de senha do Laravel.
+- Implementação da tela ForgotPasswordScreen.
+
+### Interface
+
+- Criação da tela EmailVerificationPendingScreen.
+- Exibição do e-mail cadastrado para confirmação.
+- Inclusão de componentes reutilizáveis:
+    - SuccessDialog
+    - ErrorDialog
+    - InfoDialog
+
+### Segurança
+
+- Bloqueio de acesso para usuários sem e-mail confirmado.
+- Validação de sessão através do endpoint /me.
+- Tratamento de sessões inválidas.
+- Tratamento de usuários removidos do banco de dados.
+- Logout resiliente em caso de token inválido.
+
+### Correções
+
+- Correções de navegação entre Login, Home e Verificação de E-mail.
+- Correções no fluxo de autenticação.
+- Correções no fluxo de recuperação de senha.
+- Correções de responsividade da tela de confirmação de e-mail.
+
+### Melhorias de UX
+
+- Exibição do e-mail cadastrado na tela de confirmação pendente.
+- Reenvio de e-mail de confirmação diretamente pelo aplicativo.
+- Mensagens de sucesso e erro padronizadas.
+
+### Backlog Atualizado
+
+#### Alta Prioridade
+
+- Favoritar livro diretamente na tela de detalhes.
+- Abrir filtros já preenchidos com estado e cidade do usuário.
+- Incluir opção "Todas" na lista de escolas.
+- Exibir e-mail do anunciante na tela de detalhes do livro.
+
+#### Média Prioridade
+
+- Perfil com e-mail somente leitura.
+- Correção dos avisos use_build_context_synchronously.
+- Status de conta (ativa, suspensa e bloqueada).
+
+#### Evoluções Futuras
+
+- Sistema completo de mensagens.
+- Painel administrativo Laravel.
+- Moderação de conteúdo.
+- Notificações.
+- Avaliação de usuários.
+- Histórico de conversas.
