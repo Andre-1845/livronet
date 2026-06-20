@@ -55,10 +55,5 @@ class Conversation extends Model
             : $this->userOne;
     }
 
-    public function otherUser(int $userId)
-    {
-        return $this->user_one_id === $userId
-            ? $this->userTwo
-            : $this->userOne;
-    }
+
 }
