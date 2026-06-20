@@ -63,22 +63,22 @@ class AuthController extends Controller
     }
 
     public function resendVerificationEmail(Request $request)
-{
-    $user = $request->user();
+    {
+        $user = $request->user();
 
-    if ($user->hasVerifiedEmail()) {
+        if ($user->hasVerifiedEmail()) {
+
+            return response()->json([
+                'message' => 'E-mail já confirmado.',
+            ]);
+        }
+
+        $user->sendEmailVerificationNotification();
 
         return response()->json([
-            'message' => 'E-mail já confirmado.'
+            'message' => 'E-mail reenviado com sucesso.',
         ]);
     }
-
-    $user->sendEmailVerificationNotification();
-
-    return response()->json([
-        'message' => 'E-mail reenviado com sucesso.'
-    ]);
-}
 
     public function login(Request $request)
     {
@@ -180,76 +180,73 @@ class AuthController extends Controller
     }
 
     public function emailStatus(Request $request)
-{
-    return response()->json([
-        'email_verified' =>
-            ! is_null(
+    {
+        return response()->json([
+            'email_verified' => ! is_null(
                 $request->user()
                     ->email_verified_at
             ),
-    ]);
-}
-
-public function forgotPassword(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-    ]);
-
-    $status = Password::sendResetLink([
-        'email' => $request->email,
-    ]);
-
-    if ($status === Password::RESET_LINK_SENT) {
-
-        return response()->json([
-            'message' => 'Link de recuperação enviado.'
         ]);
     }
 
-    return response()->json([
-        'message' => 'Não foi possível enviar o link.'
-    ], 422);
-}
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
 
-public function changeEmail(Request $request)
-{
-    $request->validate([
+        $status = Password::sendResetLink([
+            'email' => $request->email,
+        ]);
 
-        'email' => 'required|email|unique:users,email',
+        if ($status === Password::RESET_LINK_SENT) {
 
-        'password' => 'required',
-
-    ]);
-
-    $user = $request->user();
-
-    if (! Hash::check(
-        $request->password,
-        $user->password
-    )) {
+            return response()->json([
+                'message' => 'Link de recuperação enviado.',
+            ]);
+        }
 
         return response()->json([
-            'message' => 'Senha atual inválida.'
+            'message' => 'Não foi possível enviar o link.',
         ], 422);
     }
 
-    $user->update([
+    public function changeEmail(Request $request)
+    {
+        $request->validate([
 
-        'email' => $request->email,
+            'email' => 'required|email|unique:users,email',
 
-        'email_verified_at' => null,
+            'password' => 'required',
 
-    ]);
+        ]);
 
-    $user->sendEmailVerificationNotification();
+        $user = $request->user();
 
-    return response()->json([
+        if (! Hash::check(
+            $request->password,
+            $user->password
+        )) {
 
-        'message' =>
-            'E-mail alterado com sucesso. Uma nova confirmação foi enviada.',
+            return response()->json([
+                'message' => 'Senha atual inválida.',
+            ], 422);
+        }
 
-    ]);
-}
+        $user->update([
 
+            'email' => $request->email,
+
+            'email_verified_at' => null,
+
+        ]);
+
+        $user->sendEmailVerificationNotification();
+
+        return response()->json([
+
+            'message' => 'E-mail alterado com sucesso. Uma nova confirmação foi enviada.',
+
+        ]);
+    }
 }

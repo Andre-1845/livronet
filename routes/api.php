@@ -3,13 +3,13 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\ConversationController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\GradeController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\StateController;
 use App\Http\Controllers\Api\SubjectController;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 // ---------------- AUTH ----------------
@@ -77,27 +77,38 @@ Route::middleware('auth:sanctum')->group(function () {
     );
 
     Route::get(
-        '/messages',
-        [MessageController::class, 'index']
-    );
-
-    Route::get(
-        '/messages/{book}/{user}',
-        [MessageController::class, 'show']
-    );
-
-    Route::post(
-        '/messages',
-        [MessageController::class, 'store']
-    );
-Route::get(
         '/email-status',
         [AuthController::class, 'emailStatus']
     );
 
     Route::post(
-    '/email-resend',
-    [AuthController::class, 'resendVerificationEmail']
-);
+        '/email-resend',
+        [AuthController::class, 'resendVerificationEmail']
+    );
+
+    Route::get(
+        '/conversations',
+        [ConversationController::class, 'index']
+    );
+
+    Route::get(
+        '/conversations/{conversation}',
+        [ConversationController::class, 'show']
+    );
+
+    Route::delete(
+        '/conversations/{conversation}',
+        [ConversationController::class, 'destroy']
+    );
+
+    Route::post(
+        '/conversations/{conversation}/messages',
+        [MessageController::class, 'store']
+    );
+
+    Route::post(
+        '/conversations',
+        [ConversationController::class, 'store']
+    );
 
 });

@@ -2,9 +2,9 @@
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 Route::get('/email/verify/{id}/{hash}', function (
@@ -31,9 +31,9 @@ Route::get('/email/verify/{id}/{hash}', function (
     return view('email/email-verified');
 
 })->middleware('signed')
-  ->name('verification.verify');
+    ->name('verification.verify');
 
-  Route::get('/reset-password/{token}', function (
+Route::get('/reset-password/{token}', function (
     string $token,
     Request $request
 ) {

@@ -9,19 +9,40 @@ class ConversationResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $userId = auth()->id();
+
+        $otherUser =
+            $this->user_one_id === $userId
+                ? $this->userTwo
+                : $this->userOne;
+
+        $lastMessage = $this->messages()
+            ->latest('created_at')
+            ->first();
+
         return [
 
-            'book_id' => $this['book_id'],
+            'id' => $this->id,
 
-            'book_title' => $this['book_title'],
+            'book' => [
 
-            'other_user_id' => $this['other_user_id'],
+                'id' => $this->book?->id,
 
-            'other_user_name' => $this['other_user_name'],
+                'title' => $this->book?->title,
+            ],
 
-            'last_message' => $this['last_message'],
+            'other_user' => [
 
-            'last_message_at' => $this['last_message_at'],
+                'id' => $otherUser?->id,
+
+                'name' => $otherUser?->name,
+            ],
+
+            'last_message' => $lastMessage?->message,
+
+            'last_message_at' => $this->last_message_at?->toDateTimeString(),
+
+            'created_at' => $this->created_at?->toDateTimeString(),
         ];
     }
 }

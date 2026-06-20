@@ -21,6 +21,12 @@ return new class extends Migration
 
             $table->string('name');
 
+            $table->string('short_name')
+                ->nullable();
+
+            $table->string('type')
+                ->default('public_school');
+
             $table->timestamps();
         });
     }

@@ -13,6 +13,8 @@ class School extends Model
     protected $fillable = [
         'city_id',
         'name',
+        'short_name',
+        'type',
     ];
 
     protected function name(): Attribute
