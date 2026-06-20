@@ -13,7 +13,8 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             GradeSeeder::class,
             SubjectSeeder::class,
-            SchoolSeeder::class,
+            MilitarySchoolsSeeder::class,
+            FederalInstitutesSeeder::class,
             UserSeeder::class,
             BookSeeder::class,
 

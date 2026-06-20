@@ -16,8 +16,8 @@ class UserSeeder extends Seeder
                 'name' => 'Joao da Silva',
                 'email' => 'silva@livronet.com',
                 'password' => Hash::make('123456'),
-                'city_id' => 1, // Volta Redonda
-                'school_id' => 1, // Colégio Getúlio Vargas
+                'city_id' => 3689, // Rio de Janeiro
+                'school_id' => 41, // IFRJ
                 'whatsapp' => '24999990001',
                 'instagram' => '@joao.silva',
             ],
@@ -26,8 +26,8 @@ class UserSeeder extends Seeder
                 'name' => 'Mario Gomes',
                 'email' => 'mario@livronet.com',
                 'password' => Hash::make('123456'),
-                'city_id' => 3, // Goiânia
-                'school_id' => 2, // Colégio Batista
+                'city_id' => 3689, // Rio de Janeiro
+                'school_id' => 12, // CMRJ
                 'whatsapp' => '62999990002',
                 'instagram' => '@mario.gomes',
             ],
@@ -36,8 +36,8 @@ class UserSeeder extends Seeder
                 'name' => 'Luciana Alves',
                 'email' => 'luciana@livronet.com',
                 'password' => Hash::make('123456'),
-                'city_id' => 2, // Brasília
-                'school_id' => 4, // CMB
+                'city_id' => 3689, // Rio de Janeiro
+                'school_id' => 12, // CMRJ
                 'whatsapp' => '61999990003',
                 'instagram' => '@luciana.alves',
             ],
@@ -46,9 +46,9 @@ class UserSeeder extends Seeder
                 'name' => 'Fernanda Costa',
                 'email' => 'fernanda@livronet.com',
                 'password' => Hash::make('123456'),
-                'city_id' => 8, // Barra Mansa
-                'school_id' => 3, // SESI Barra Mansa
-                'whatsapp' => '24999990004',
+                'city_id' =>806, // Brasilia
+                'school_id' => 3, // CMB
+                'whatsapp' => '61999990004',
                 'instagram' => '@fernanda.costa',
             ],
 
@@ -56,8 +56,8 @@ class UserSeeder extends Seeder
                 'name' => 'Carlos Pereira',
                 'email' => 'carlos@livronet.com',
                 'password' => Hash::make('123456'),
-                'city_id' => 9, // Resende
-                'school_id' => 1, // Colégio Getúlio Vargas
+                'city_id' => 806, // Brasilia
+                'school_id' => 3, // CMB
                 'whatsapp' => '24999990005',
                 'instagram' => '@carlos.pereira',
             ],
@@ -66,8 +66,8 @@ class UserSeeder extends Seeder
                 'name' => 'Ana Beatriz Souza',
                 'email' => 'ana@livronet.com',
                 'password' => Hash::make('123456'),
-                'city_id' => 6, // Rio de Janeiro
-                'school_id' => 2, // Colégio Batista
+                'city_id' => 3316, // Curitiba
+                'school_id' => 5, // CMC
                 'whatsapp' => '21999990006',
                 'instagram' => '@ana.beatriz',
             ],
@@ -76,8 +76,8 @@ class UserSeeder extends Seeder
                 'name' => 'Tales Brandao',
                 'email' => 'tales@livronet.com',
                 'password' => Hash::make('123456'),
-                'city_id' => 2, // Brasília
-                'school_id' => 4, // CMB
+                'city_id' => 1799, // Juiz de Fora
+                'school_id' => 8, // CMJF
                 'whatsapp' => '61999990003',
                 'instagram' => '@tales.brandao',
             ],
