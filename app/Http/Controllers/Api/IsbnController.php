@@ -15,6 +15,13 @@ class IsbnController extends Controller
 
     public function show(string $isbn): JsonResponse
     {
+
+file_put_contents(
+    storage_path('logs/isbn_trace.log'),
+    now() . ' ISBN=' . $isbn . PHP_EOL,
+    FILE_APPEND
+);
+
         Log::info(
             '[ISBN] Consulta iniciada',
             ['isbn' => $isbn]
