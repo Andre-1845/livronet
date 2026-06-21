@@ -20,18 +20,18 @@ class GoogleBooksService
                 ->get(
                     'https://www.googleapis.com/books/v1/volumes',
                     [
-                        'q' => 'isbn:' . $isbn,
+                        'q' => 'isbn:'.$isbn,
                     ]
                 );
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 return null;
             }
 
             $data = $response->json();
 
             if (
-                !isset($data['items']) ||
+                ! isset($data['items']) ||
                 empty($data['items'])
             ) {
                 return null;
@@ -50,8 +50,7 @@ class GoogleBooksService
                 'publisher' => $volume['publisher'] ?? null,
                 'published_date' => $volume['publishedDate'] ?? null,
                 'edition' => null,
-                'cover_url' =>
-                    $volume['imageLinks']['thumbnail']
+                'cover_url' => $volume['imageLinks']['thumbnail']
                     ?? $volume['imageLinks']['smallThumbnail']
                     ?? null,
                 'source' => 'google_books',

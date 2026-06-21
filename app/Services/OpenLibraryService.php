@@ -17,7 +17,7 @@ class OpenLibraryService
             "https://openlibrary.org/isbn/{$isbn}.json"
         );
 
-        if (!$book) {
+        if (! $book) {
             return null;
         }
 
@@ -36,24 +36,24 @@ class OpenLibraryService
     private function getAuthorFromWork(array $book): ?string
     {
         if (
-            !isset($book['works']) ||
+            ! isset($book['works']) ||
             empty($book['works'][0]['key'])
         ) {
             return null;
         }
 
         $work = $this->safeGet(
-            'https://openlibrary.org' .
-            $book['works'][0]['key'] .
+            'https://openlibrary.org'.
+            $book['works'][0]['key'].
             '.json'
         );
 
-        if (!$work) {
+        if (! $work) {
             return null;
         }
 
         if (
-            !isset($work['authors']) ||
+            ! isset($work['authors']) ||
             empty($work['authors'])
         ) {
             return null;
@@ -66,21 +66,21 @@ class OpenLibraryService
             $authorKey =
                 $authorData['author']['key'] ?? null;
 
-            if (!$authorKey) {
+            if (! $authorKey) {
                 continue;
             }
 
             $author = $this->safeGet(
-                'https://openlibrary.org' .
-                $authorKey .
+                'https://openlibrary.org'.
+                $authorKey.
                 '.json'
             );
 
-            if (!$author) {
+            if (! $author) {
                 continue;
             }
 
-            if (!empty($author['name'])) {
+            if (! empty($author['name'])) {
                 $authors[] = $author['name'];
             }
         }
@@ -95,7 +95,7 @@ class OpenLibraryService
         if (
             isset($book['publishers']) &&
             is_array($book['publishers']) &&
-            !empty($book['publishers'])
+            ! empty($book['publishers'])
         ) {
             return $book['publishers'][0];
         }
@@ -108,11 +108,11 @@ class OpenLibraryService
         if (
             isset($book['covers']) &&
             is_array($book['covers']) &&
-            !empty($book['covers'])
+            ! empty($book['covers'])
         ) {
             return
-                'https://covers.openlibrary.org/b/id/' .
-                $book['covers'][0] .
+                'https://covers.openlibrary.org/b/id/'.
+                $book['covers'][0].
                 '-L.jpg';
         }
 
@@ -127,7 +127,7 @@ class OpenLibraryService
                 ->acceptJson()
                 ->get($url);
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 return null;
             }
 

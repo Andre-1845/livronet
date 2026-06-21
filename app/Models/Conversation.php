@@ -54,6 +54,4 @@ class Conversation extends Model
             ? $this->userTwo
             : $this->userOne;
     }
-
-
 }
