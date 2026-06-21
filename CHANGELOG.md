@@ -305,3 +305,92 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 - Notificações.
 - Avaliação de usuários.
 - Histórico de conversas.
+
+## v0.7.0 - 2026-06-20
+
+### LIV-080 - Sistema de Mensagens
+
+- Implementação da entidade Conversation.
+- Refatoração completa do módulo de mensagens.
+- Criação do ConversationController.
+- Refatoração do MessageController.
+- Implementação da arquitetura Conversation -> Messages.
+- Atualização do MessageProvider.
+- Atualização do MessageRepository.
+- Refatoração do ChatScreen.
+- Refatoração do MessagesScreen.
+- Integração da tela de detalhes do livro com conversas.
+- Validação completa do fluxo de mensagens ponta a ponta.
+
+### LIV-081 - Instituições de Ensino
+
+- Criação da MilitarySchoolsSeeder.
+- Inclusão dos Colégios Militares do Sistema Colégio Militar do Brasil.
+- Criação da FederalInstitutesSeeder.
+- Inclusão dos Institutos Federais do Brasil.
+- Implementação de seeders idempotentes utilizando updateOrCreate().
+- Padronização dos tipos de instituições de ensino.
+
+### Backlog Atualizado
+
+- LIV-090 ISBN Automático.
+- Layout avançado do módulo de mensagens.
+- Exclusão de conversas.
+- Indicador visual de leitura.
+- Upload de imagens dos livros.
+
+---
+
+## Próxima Sprint Planejada
+
+### LIV-090 - ISBN Automático
+
+Backend
+
+Concluído.
+
+Endpoint disponível:
+
+GET /api/books/isbn/{isbn}
+
+Arquitetura:
+
+IsbnController
+→ BookMetadataService
+→ OpenLibraryService
+→ GoogleBooksService (fallback)
+
+Dados retornados:
+
+- ISBN
+- Título
+- Autor
+- Editora
+- Data de publicação
+- Capa
+- Fonte da consulta
+
+Flutter (Planejado)
+
+- IsbnLookupModel
+- IsbnRepository
+- IsbnProvider
+- Integração CreateBookScreen
+- Preenchimento automático dos campos do livro
+- Preview da capa
+
+Próxima evolução:
+
+### LIV-090.1
+
+Leitura de ISBN por câmera
+
+Tecnologia prevista:
+
+- mobile_scanner
+
+Objetivo:
+
+- Capturar ISBN via câmera
+- Consultar metadados automaticamente
+- Reduzir tempo de cadastro

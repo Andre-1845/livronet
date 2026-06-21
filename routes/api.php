@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\ConversationController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\GradeController;
+use App\Http\Controllers\Api\IsbnController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\StateController;
@@ -109,6 +110,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post(
         '/conversations',
         [ConversationController::class, 'store']
+    );
+
+    Route::get(
+        '/books/isbn/{isbn}',
+        [IsbnController::class, 'show']
     );
 
 });

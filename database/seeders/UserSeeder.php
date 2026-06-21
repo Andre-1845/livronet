@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
                 'name' => 'Fernanda Costa',
                 'email' => 'fernanda@livronet.com',
                 'password' => Hash::make('123456'),
-                'city_id' =>806, // Brasilia
+                'city_id' => 806, // Brasilia
                 'school_id' => 3, // CMB
                 'whatsapp' => '61999990004',
                 'instagram' => '@fernanda.costa',
