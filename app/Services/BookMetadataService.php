@@ -5,12 +5,19 @@ namespace App\Services;
 class BookMetadataService
 {
     public function __construct(
-        protected OpenLibraryService $openLibraryService,
         protected GoogleBooksService $googleBooksService,
+        protected OpenLibraryService $openLibraryService,
     ) {}
 
     public function searchByIsbn(string $isbn): ?array
     {
+        $book = $this->googleBooksService
+            ->searchByIsbn($isbn);
+
+        if ($book) {
+            return $book;
+        }
+
         $book = $this->openLibraryService
             ->searchByIsbn($isbn);
 
@@ -18,7 +25,6 @@ class BookMetadataService
             return $book;
         }
 
-        return $this->googleBooksService
-            ->searchByIsbn($isbn);
+        return null;
     }
 }

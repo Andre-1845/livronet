@@ -3,57 +3,71 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GoogleBooksService
 {
+    private const TIMEOUT = 5;
+
     public function searchByIsbn(string $isbn): ?array
     {
         $isbn = preg_replace('/[^0-9X]/i', '', $isbn);
 
-        $response = Http::timeout(10)->get(
-            'https://www.googleapis.com/books/v1/volumes',
-            [
-                'q' => 'isbn:'.$isbn,
-            ]
-        );
+        try {
 
-        if (! $response->successful()) {
-            return null;
-        }
+            $response = Http::timeout(self::TIMEOUT)
+                ->acceptJson()
+                ->get(
+                    'https://www.googleapis.com/books/v1/volumes',
+                    [
+                        'q' => 'isbn:' . $isbn,
+                    ]
+                );
 
-        $data = $response->json();
+            if (!$response->successful()) {
+                return null;
+            }
 
-        if (
-            ! isset($data['items']) ||
-            empty($data['items'])
-        ) {
-            return null;
-        }
+            $data = $response->json();
 
-        $volume = $data['items'][0]['volumeInfo'] ?? [];
+            if (
+                !isset($data['items']) ||
+                empty($data['items'])
+            ) {
+                return null;
+            }
 
-        return [
-            'isbn' => $isbn,
+            $item = $data['items'][0];
+            $volume = $item['volumeInfo'] ?? [];
 
-            'google_books_id' => $data['items'][0]['id'] ?? null,
-
-            'title' => $volume['title'] ?? null,
-
-            'author' => isset($volume['authors'])
+            return [
+                'isbn' => $isbn,
+                'google_books_id' => $item['id'] ?? null,
+                'title' => $volume['title'] ?? null,
+                'author' => isset($volume['authors'])
                     ? implode(', ', $volume['authors'])
                     : null,
+                'publisher' => $volume['publisher'] ?? null,
+                'published_date' => $volume['publishedDate'] ?? null,
+                'edition' => null,
+                'cover_url' =>
+                    $volume['imageLinks']['thumbnail']
+                    ?? $volume['imageLinks']['smallThumbnail']
+                    ?? null,
+                'source' => 'google_books',
+            ];
 
-            'publisher' => $volume['publisher'] ?? null,
+        } catch (\Throwable $e) {
 
-            'published_date' => $volume['publishedDate'] ?? null,
+            Log::warning(
+                'Google Books request failed',
+                [
+                    'isbn' => $isbn,
+                    'message' => $e->getMessage(),
+                ]
+            );
 
-            'edition' => null,
-
-            'cover_url' => $volume['imageLinks']['thumbnail']
-                ?? $volume['imageLinks']['smallThumbnail']
-                ?? null,
-
-            'source' => 'google_books',
-        ];
+            return null;
+        }
     }
 }

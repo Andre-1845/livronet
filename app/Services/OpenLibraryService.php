@@ -3,55 +3,32 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class OpenLibraryService
 {
+    private const TIMEOUT = 5;
+
     public function searchByIsbn(string $isbn): ?array
     {
         $isbn = preg_replace('/[^0-9X]/i', '', $isbn);
 
-        $response = Http::timeout(10)
-            ->get("https://openlibrary.org/isbn/{$isbn}.json");
+        $book = $this->safeGet(
+            "https://openlibrary.org/isbn/{$isbn}.json"
+        );
 
-        if (! $response->successful()) {
+        if (!$book) {
             return null;
-        }
-
-        $book = $response->json();
-
-        $author = $this->getAuthorFromWork($book);
-
-        $publisher = null;
-
-        if (
-            isset($book['publishers']) &&
-            is_array($book['publishers']) &&
-            count($book['publishers']) > 0
-        ) {
-            $publisher = $book['publishers'][0];
-        }
-
-        $coverUrl = null;
-
-        if (
-            isset($book['covers']) &&
-            is_array($book['covers']) &&
-            count($book['covers']) > 0
-        ) {
-            $coverUrl =
-                'https://covers.openlibrary.org/b/id/'.
-                $book['covers'][0].
-                '-L.jpg';
         }
 
         return [
             'isbn' => $isbn,
             'title' => $book['title'] ?? null,
-            'author' => $author,
-            'publisher' => $publisher,
+            'author' => $this->getAuthorFromWork($book),
+            'publisher' => $this->extractPublisher($book),
             'published_date' => $book['publish_date'] ?? null,
             'edition' => null,
-            'cover_url' => $coverUrl,
+            'cover_url' => $this->extractCoverUrl($book),
             'source' => 'openlibrary',
         ];
     }
@@ -59,27 +36,24 @@ class OpenLibraryService
     private function getAuthorFromWork(array $book): ?string
     {
         if (
-            ! isset($book['works']) ||
+            !isset($book['works']) ||
             empty($book['works'][0]['key'])
         ) {
             return null;
         }
 
-        $workResponse = Http::timeout(10)
-            ->get(
-                'https://openlibrary.org'.
-                $book['works'][0]['key'].
-                '.json'
-            );
+        $work = $this->safeGet(
+            'https://openlibrary.org' .
+            $book['works'][0]['key'] .
+            '.json'
+        );
 
-        if (! $workResponse->successful()) {
+        if (!$work) {
             return null;
         }
 
-        $work = $workResponse->json();
-
         if (
-            ! isset($work['authors']) ||
+            !isset($work['authors']) ||
             empty($work['authors'])
         ) {
             return null;
@@ -92,30 +66,84 @@ class OpenLibraryService
             $authorKey =
                 $authorData['author']['key'] ?? null;
 
-            if (! $authorKey) {
+            if (!$authorKey) {
                 continue;
             }
 
-            $authorResponse = Http::timeout(10)
-                ->get(
-                    'https://openlibrary.org'.
-                    $authorKey.
-                    '.json'
-                );
+            $author = $this->safeGet(
+                'https://openlibrary.org' .
+                $authorKey .
+                '.json'
+            );
 
-            if (! $authorResponse->successful()) {
+            if (!$author) {
                 continue;
             }
 
-            $authorJson = $authorResponse->json();
-
-            if (! empty($authorJson['name'])) {
-                $authors[] = $authorJson['name'];
+            if (!empty($author['name'])) {
+                $authors[] = $author['name'];
             }
         }
 
         return empty($authors)
             ? null
             : implode(', ', $authors);
+    }
+
+    private function extractPublisher(array $book): ?string
+    {
+        if (
+            isset($book['publishers']) &&
+            is_array($book['publishers']) &&
+            !empty($book['publishers'])
+        ) {
+            return $book['publishers'][0];
+        }
+
+        return null;
+    }
+
+    private function extractCoverUrl(array $book): ?string
+    {
+        if (
+            isset($book['covers']) &&
+            is_array($book['covers']) &&
+            !empty($book['covers'])
+        ) {
+            return
+                'https://covers.openlibrary.org/b/id/' .
+                $book['covers'][0] .
+                '-L.jpg';
+        }
+
+        return null;
+    }
+
+    private function safeGet(string $url): ?array
+    {
+        try {
+
+            $response = Http::timeout(self::TIMEOUT)
+                ->acceptJson()
+                ->get($url);
+
+            if (!$response->successful()) {
+                return null;
+            }
+
+            return $response->json();
+
+        } catch (\Throwable $e) {
+
+            Log::warning(
+                'OpenLibrary request failed',
+                [
+                    'url' => $url,
+                    'message' => $e->getMessage(),
+                ]
+            );
+
+            return null;
+        }
     }
 }
