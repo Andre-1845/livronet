@@ -11,14 +11,14 @@ class BookMetadataService
 
     public function searchByIsbn(string $isbn): ?array
     {
-        $book = $this->googleBooksService
+        $book = $this->openLibraryService
             ->searchByIsbn($isbn);
 
         if ($book) {
             return $book;
         }
 
-        $book = $this->openLibraryService
+        $book = $this->googleBooksService
             ->searchByIsbn($isbn);
 
         if ($book) {
