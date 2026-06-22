@@ -7,8 +7,12 @@ use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
+use App\Models\IsbnCatalog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BookController extends Controller
 {
@@ -118,11 +122,141 @@ class BookController extends Controller
 
         $imagePath = null;
 
+        /*
+        |--------------------------------------------------------------------------
+        | 1 - IMAGEM ENVIADA PELO USUÁRIO
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->hasFile('image')) {
 
             $imagePath = $request
                 ->file('image')
                 ->store('books', 'public');
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | 2 - CAPA AUTOMÁTICA VIA ISBN CATALOG
+        |--------------------------------------------------------------------------
+        */
+
+        elseif (! empty($request->isbn)) {
+
+            $catalog = IsbnCatalog::where(
+                'isbn',
+                $request->isbn
+            )->first();
+
+            if ($catalog) {
+
+                /*
+                |--------------------------------------------------------------------------
+                | 2.1 - REUTILIZA CAPA LOCAL
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    ! empty($catalog->local_cover_path)
+                    && Storage::disk('public')->exists(
+                        $catalog->local_cover_path
+                    )
+                ) {
+
+                    $extension = pathinfo(
+                        $catalog->local_cover_path,
+                        PATHINFO_EXTENSION
+                    );
+
+                    $newFile =
+                        'books/'.
+                        Str::uuid().
+                        '.'.
+                        $extension;
+
+                    Storage::disk('public')->copy(
+                        $catalog->local_cover_path,
+                        $newFile
+                    );
+
+                    $imagePath = $newFile;
+
+                    Log::info(
+                        '[ISBN COVER] Reutilizando capa local',
+                        [
+                            'isbn' => $request->isbn,
+                        ]
+                    );
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | 2.2 - DOWNLOAD DA CAPA
+                |--------------------------------------------------------------------------
+                */
+
+                elseif (! empty($catalog->cover_url)) {
+
+                    try {
+
+                        Log::info(
+                            '[ISBN COVER] Download iniciado',
+                            [
+                                'isbn' => $request->isbn,
+                            ]
+                        );
+
+                        $response = Http::timeout(15)
+                            ->get($catalog->cover_url);
+
+                        if ($response->successful()) {
+
+                            $catalogFile =
+                                'books/catalog/'.
+                                Str::uuid().
+                                '.jpg';
+
+                            Storage::disk('public')->put(
+                                $catalogFile,
+                                $response->body()
+                            );
+
+                            $catalog->update([
+                                'local_cover_path' => $catalogFile,
+                            ]);
+
+                            $newFile =
+                                'books/'.
+                                Str::uuid().
+                                '.jpg';
+
+                            Storage::disk('public')->copy(
+                                $catalogFile,
+                                $newFile
+                            );
+
+                            $imagePath = $newFile;
+
+                            Log::info(
+                                '[ISBN COVER] Download concluído',
+                                [
+                                    'isbn' => $request->isbn,
+                                    'catalog_file' => $catalogFile,
+                                ]
+                            );
+                        }
+                    } catch (\Throwable $e) {
+
+                        Log::warning(
+                            '[ISBN COVER] Falha download',
+                            [
+                                'isbn' => $request->isbn,
+                                'erro' => $e->getMessage(),
+                            ]
+                        );
+                    }
+                }
+            }
         }
 
         $book = Book::create([
