@@ -394,3 +394,110 @@ Objetivo:
 - Capturar ISBN via câmera
 - Consultar metadados automaticamente
 - Reduzir tempo de cadastro
+
+## v0.8.0-beta1 - 2026-06-23
+
+### LIV-090 - ISBN Lookup
+
+#### Flutter
+
+- Criação do IsbnLookupModel.
+- Criação do IsbnRepository.
+- Criação do IsbnProvider.
+- Integração da consulta ISBN na tela de cadastro de livros.
+- Implementação da leitura de ISBN por câmera utilizando mobile_scanner.
+- Preenchimento automático de:
+    - ISBN
+    - Título
+    - Autor
+    - Editora
+    - Data de publicação
+    - Capa
+
+#### Laravel
+
+- Implementação do endpoint GET /api/books/isbn/{isbn}.
+- Criação do IsbnController.
+- Criação do BookMetadataService.
+- Integração com OpenLibrary.
+- Integração com Google Books como fallback.
+- Inclusão de logs detalhados para auditoria das consultas ISBN.
+
+### LIV-091 - ISBN Catalog
+
+#### Laravel
+
+- Criação da tabela isbn_catalog.
+- Criação do model IsbnCatalog.
+- Persistência local dos metadados obtidos nas APIs externas.
+- Reutilização automática de consultas previamente realizadas.
+- Controle de:
+    - lookup_count
+    - last_lookup_at
+    - last_api_refresh_at
+    - source
+    - api_response_hash
+    - subjects sugeridos
+
+#### Benefícios
+
+- Redução de chamadas para APIs externas.
+- Redução de tempo de resposta.
+- Menor dependência de serviços externos.
+- Base para classificação automática de disciplinas.
+
+### LIV-094 - Cover Cache
+
+#### Laravel
+
+- Download automático das capas retornadas pelas APIs ISBN.
+- Armazenamento local das capas no servidor.
+- Reutilização automática das capas já armazenadas.
+- Inclusão do campo local_cover_path.
+- Implementação de logs para download e reaproveitamento de capas.
+
+### LIV-096 - Scanner Stabilization
+
+#### Flutter
+
+- Correção de incompatibilidades do plugin mobile_scanner.
+- Ajustes de permissões Android.
+- Correção de falhas na inicialização do scanner.
+- Estabilização da leitura por câmera.
+
+### LIV-097A - Exibição de Capas
+
+#### Flutter
+
+- Exibição de capas reais na listagem de livros.
+- Exibição de capas reais na tela de detalhes.
+- Fallback para placeholder quando não houver imagem.
+
+#### Infraestrutura
+
+- Correção da publicação do storage na Hostinger.
+- Criação manual do link simbólico:
+
+    public/storage -> ../storage/app/public
+
+#### Resultado
+
+- Capas ISBN exibidas corretamente.
+- Capas personalizadas exibidas corretamente.
+
+### LIV-102 - Exibição de ISBN
+
+#### Flutter
+
+- Inclusão do ISBN na tela de detalhes do livro.
+- Exibição condicional apenas quando o ISBN estiver preenchido.
+
+### Backlog Registrado
+
+- LIV-097B - Capas em Favoritos e Meus Livros.
+- LIV-098 - Shared Cover Storage.
+- LIV-099 - ISBN First Workflow.
+- LIV-100 - Limpeza do formulário após consulta ISBN.
+- LIV-101 - Estratégia avançada de retry para APIs ISBN.
+- LIV-102A - Copiar ISBN para área de transferência.
+- LIV-103 - Book Compact Card.

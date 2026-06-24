@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class OpenLibraryService
 {
-    private const TIMEOUT = 5;
+    private const TIMEOUT = 10;
 
     public function searchByIsbn(string $isbn): ?array
     {
@@ -31,6 +31,7 @@ class OpenLibraryService
             'cover_url' => $this->extractCoverUrl($book),
             'source' => 'openlibrary',
         ];
+
     }
 
     private function getAuthorFromWork(array $book): ?string
@@ -130,6 +131,15 @@ class OpenLibraryService
             if (! $response->successful()) {
                 return null;
             }
+
+            Log::info(
+                '[ISBN] OpenLibrary RESULT',
+                [
+                    'isbn' => $isbn,
+                    'status' => $response->status(),
+                    'empty' => empty($data),
+                ]
+            );
 
             return $response->json();
 

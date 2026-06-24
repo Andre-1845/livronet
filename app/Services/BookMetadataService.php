@@ -33,13 +33,13 @@ class BookMetadataService
 
         if ($catalog) {
 
-           Log::info(
-    '[ISBN] Catalog HIT',
-    [
-        'isbn' => $isbn,
-        'lookup_count' => $catalog->lookup_count + 1,
-    ]
-);
+            Log::info(
+                '[ISBN] Catalog HIT',
+                [
+                    'isbn' => $isbn,
+                    'lookup_count' => $catalog->lookup_count + 1,
+                ]
+            );
 
             $catalog->increment(
                 'lookup_count'

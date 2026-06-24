@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class GoogleBooksService
 {
-    private const TIMEOUT = 5;
+    private const TIMEOUT = 10;
 
     public function searchByIsbn(string $isbn): ?array
     {
@@ -29,7 +29,14 @@ class GoogleBooksService
             }
 
             $data = $response->json();
-
+            Log::info(
+                '[ISBN] GoogleBooks RESULT',
+                [
+                    'isbn' => $isbn,
+                    'status' => $response->status(),
+                    'totalItems' => $data['totalItems'] ?? 0,
+                ]
+            );
             if (
                 ! isset($data['items']) ||
                 empty($data['items'])
