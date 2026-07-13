@@ -14,7 +14,7 @@ class MessagesRelationManager extends RelationManager
 
     // Somente leitura: ferramenta de moderação, não de edição de
     // conteúdo de terceiros.
-    public static function canCreate(): bool
+    public function canCreate(): bool
     {
         return false;
     }
