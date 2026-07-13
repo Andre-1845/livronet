@@ -30,7 +30,9 @@ class Conversation extends Model
 
     public function book()
     {
-        return $this->belongsTo(Book::class);
+        // withTrashed: mesmo que o dono apague o livro depois, o
+        // histórico da conversa continua mostrando qual livro era.
+        return $this->belongsTo(Book::class)->withTrashed();
     }
 
     public function userOne()

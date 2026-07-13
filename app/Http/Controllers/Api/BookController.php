@@ -356,11 +356,11 @@ class BookController extends Controller
             ], 403);
         }
 
-        if ($book->image) {
-
-            Storage::disk('public')
-                ->delete($book->image);
-        }
+        // Soft delete: a imagem NÃO é apagada aqui de propósito, para que
+        // conversas antigas sobre este livro continuem exibindo a capa.
+        // A imagem só é removida de fato quando o registro é limpo
+        // definitivamente (ver comando books:purge-trashed).
+        $book->update(['is_available' => false]);
 
         $book->delete();
 
