@@ -28,3 +28,7 @@ estrutura_backend.txt
 .env
 error_log
 /storage/logs/*
+
+# Dumps/relatórios gerados localmente (tree, route:list, etc.) — não versionar
+*.txt
+!CHANGELOG.md

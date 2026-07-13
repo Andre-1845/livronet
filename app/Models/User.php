@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
@@ -31,6 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'whatsapp',
         'instagram',
         'email_verified_at',
+        'is_admin',
     ];
 
     /**
@@ -53,7 +56,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
+    }
+
+    /**
+     * Só usuários marcados como is_admin conseguem logar no painel
+     * Filament (/admin). Sem isso, qualquer estudante cadastrado no
+     * app conseguiria tentar logar lá com as próprias credenciais,
+     * já que o painel usa a mesma tabela users.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->is_admin === true;
     }
 
     public function city()
