@@ -501,3 +501,217 @@ Objetivo:
 - LIV-101 - Estratégia avançada de retry para APIs ISBN.
 - LIV-102A - Copiar ISBN para área de transferência.
 - LIV-103 - Book Compact Card.
+
+## v0.8.0-beta2 - 2026-06-23
+
+### LIV-103 - Book Compact Card
+
+#### Flutter
+
+- Criação do componente reutilizável BookCompactCard.
+- Aplicação do BookCompactCard na tela de Favoritos.
+- Aplicação do BookCompactCard na tela Meus Livros.
+- Exibição de capa dos livros.
+- Exibição de preço quando disponível.
+- Exibição de chips de tipo de anúncio:
+    - Venda
+    - Troca
+    - Doação
+
+- Padronização visual dos cards compactos.
+
+#### Benefícios
+
+- Redução de código duplicado.
+- Melhor manutenção futura.
+- Padronização visual das listagens.
+
+---
+
+### LIV-097B - Capas em Favoritos e Meus Livros
+
+#### Flutter
+
+- Exibição de capas ISBN em Favoritos.
+- Exibição de capas ISBN em Meus Livros.
+- Utilização do mesmo fluxo de imagens da listagem principal.
+
+#### Resultado
+
+- Consistência visual entre todas as telas de livros.
+
+## v0.8.0-beta3 - 2026-06-24
+
+### LIV-099 - ISBN First Workflow
+
+#### Flutter
+
+- Criação da BookEntryScreen.
+- Inclusão da opção "Cadastrar com ISBN".
+- Inclusão da opção "Continuar sem ISBN".
+- Implementação da digitação manual de ISBN.
+- Integração entre scanner e cadastro de livros.
+- Consulta automática ao abrir o formulário com ISBN informado.
+- Preenchimento automático dos metadados do livro.
+
+#### Cadastro Automático
+
+Campos preenchidos automaticamente:
+
+- ISBN
+- Título
+- Autor
+- Editora
+- Data de publicação
+- Capa
+
+---
+
+### LIV-099A - Experiência de Consulta ISBN
+
+#### Flutter
+
+- Criação do Card de progresso da consulta ISBN.
+- Implementação de LinearProgressIndicator.
+- Exibição de mensagem informativa durante a consulta.
+- Implementação do diálogo "Livro Encontrado".
+- Implementação do diálogo "Livro Não Encontrado".
+- Exibição da fonte dos metadados recuperados.
+- Melhoria da experiência de cadastro assistido.
+
+---
+
+### LIV-120 - Proteção Contra Consultas Concorrentes
+
+#### Flutter
+
+- Bloqueio de múltiplas consultas simultâneas.
+- Proteção contra cliques repetidos durante lookup.
+- Melhoria da estabilidade do fluxo ISBN.
+
+---
+
+### LIV-091A - Evoluções do Catálogo ISBN
+
+#### Laravel
+
+- Ampliação dos logs de auditoria das consultas ISBN.
+- Registro de tempos de execução das consultas externas.
+- Identificação de Catalog HIT.
+- Monitoramento do reaproveitamento de capas locais.
+
+#### Resultado
+
+- Melhor rastreabilidade do fluxo ISBN.
+- Maior capacidade de diagnóstico de problemas.
+- Base para futuras otimizações de desempenho.
+
+---
+
+### Backlog Atualizado
+
+#### Alta Prioridade
+
+- LIV-100 Limpar formulário.
+- LIV-100A Cancelar cadastro.
+- LIV-121 Cache de autores OpenLibrary.
+- LIV-123 Redução de timeout OpenLibrary.
+
+#### Média Prioridade
+
+- LIV-124 Fallback Google Books para autores.
+- LIV-125 Validação ISBN 10/13.
+- LIV-126 Normalização centralizada de ISBN.
+
+#### Baixa Prioridade
+
+- LIV-127 Destaque visual do card de consulta ISBN.
+- LIV-128 Desabilitar scanner durante consulta.
+- LIV-129 Benchmark OpenLibrary x Google Books.
+- LIV-130 Estatísticas avançadas do catálogo ISBN.
+
+## v0.8.3-beta1 - 2026-06-24
+
+### LIV-125 - Validação e Normalização de ISBN
+
+#### Flutter
+
+- Centralização das regras de ISBN na classe `IsbnUtils`.
+- Implementação da validação completa para ISBN-10.
+- Implementação da validação completa para ISBN-13.
+- Suporte ao dígito verificador "X" em ISBN-10.
+- Implementação do método `normalizeAndValidate()`.
+- Normalização automática dos ISBNs digitados manualmente.
+- Bloqueio da navegação para o cadastro quando o ISBN informado for inválido.
+- Unificação da validação utilizada pela digitação manual e pela leitura via câmera.
+
+#### Benefícios
+
+- Redução de consultas inválidas às APIs externas.
+- Garantia de persistência apenas de ISBNs válidos.
+- Centralização da lógica de validação em um único componente reutilizável.
+
+---
+
+### LIV-130 - Busca Textual Integrada
+
+#### Flutter
+
+- Implementação do campo permanente de pesquisa na tela principal de livros.
+- Pesquisa executada mediante ação explícita do usuário (lupa ou tecla "Pesquisar").
+- Integração da pesquisa textual ao `BookFilter`.
+- Compatibilidade total com filtros avançados e paginação.
+
+#### Laravel
+
+- Reutilização da infraestrutura existente para pesquisa textual.
+- Pesquisa integrada por:
+    - Título
+    - Autor
+    - Editora
+
+#### Benefícios
+
+- Busca rápida por palavras-chave.
+- Pesquisa combinada com filtros existentes.
+- Melhoria significativa da experiência de localização de livros.
+
+---
+
+### Decisões Arquiteturais
+
+#### ARQ-003 - Centralização das regras de ISBN
+
+- Toda validação de ISBN passa pela classe `IsbnUtils`.
+- Scanner e digitação manual utilizam exatamente a mesma lógica de validação.
+- Todo ISBN deve ser normalizado antes de qualquer consulta ou persistência.
+
+#### ARQ-004 - Pesquisa Unificada
+
+- O `BookFilter` torna-se o objeto central para todos os critérios de pesquisa.
+- Toda nova forma de pesquisa deverá evoluir o `BookFilter`.
+- A pesquisa textual será executada apenas mediante ação explícita do usuário.
+- Evitar mecanismos paralelos de pesquisa.
+
+---
+
+### Backlog Atualizado
+
+#### Alta Prioridade
+
+- LIV-131 – Buscar ISBN também na tabela `books` (livros cadastrados pela comunidade).
+- LIV-132 – Validar ISBN também no momento do salvamento manual.
+
+#### Média Prioridade
+
+- LIV-134 – Filtros Inteligentes.
+    - Chips de filtros ativos.
+    - Remoção individual de filtros.
+    - Botão "Limpar todos".
+    - Indicador "Filtros (N)".
+    - Contador de livros encontrados.
+
+#### Baixa Prioridade
+
+- LIV-150 – Code Quality.
+    - Eliminar os avisos remanescentes do `flutter analyze`.
