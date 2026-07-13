@@ -15,11 +15,15 @@ use Illuminate\Support\Facades\Route;
 
 // ---------------- AUTH ----------------
 
-Route::post('/register', [AuthController::class, 'register']);
+Route::middleware('throttle:6,1')->group(function () {
 
-Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
 
-Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/login', [AuthController::class, 'login']);
+
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+
+});
 
 // ---------------- PUBLIC ROUTES ----------------
 
@@ -39,9 +43,10 @@ Route::get('/states', [StateController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get('/books', [BookController::class, 'index']);
-
-    Route::get('/books/{book}', [BookController::class, 'show']);
+    // ---- Acessível mesmo sem e-mail confirmado ----
+    // (o usuário precisa conseguir ver o próprio status,
+    // reenviar confirmação, sair, ou corrigir o e-mail
+    // mesmo antes de verificar)
 
     Route::get('/me', [AuthController::class, 'me']);
 
@@ -50,32 +55,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/change-email', [AuthController::class, 'changeEmail']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
-
-    Route::post('/books', [BookController::class, 'store']);
-
-    Route::put('/books/{book}', [BookController::class, 'update']);
-
-    Route::delete('/books/{book}', [BookController::class, 'destroy']);
-
-    Route::get(
-        '/my-books',
-        [BookController::class, 'myBooks']
-    );
-
-    Route::post(
-        '/favorites/{book}',
-        [FavoriteController::class, 'store']
-    );
-
-    Route::delete(
-        '/favorites/{book}',
-        [FavoriteController::class, 'destroy']
-    );
-
-    Route::get(
-        '/favorites',
-        [FavoriteController::class, 'index']
-    );
 
     Route::get(
         '/email-status',
@@ -87,34 +66,70 @@ Route::middleware('auth:sanctum')->group(function () {
         [AuthController::class, 'resendVerificationEmail']
     );
 
-    Route::get(
-        '/conversations',
-        [ConversationController::class, 'index']
-    );
+    // ---- Exige e-mail confirmado ----
 
-    Route::get(
-        '/conversations/{conversation}',
-        [ConversationController::class, 'show']
-    );
+    Route::middleware('verified')->group(function () {
 
-    Route::delete(
-        '/conversations/{conversation}',
-        [ConversationController::class, 'destroy']
-    );
+        Route::get('/books', [BookController::class, 'index']);
 
-    Route::post(
-        '/conversations/{conversation}/messages',
-        [MessageController::class, 'store']
-    );
+        Route::get('/books/{book}', [BookController::class, 'show']);
 
-    Route::post(
-        '/conversations',
-        [ConversationController::class, 'store']
-    );
+        Route::post('/books', [BookController::class, 'store']);
 
-    Route::get(
-        '/books/isbn/{isbn}',
-        [IsbnController::class, 'show']
-    );
+        Route::put('/books/{book}', [BookController::class, 'update']);
+
+        Route::delete('/books/{book}', [BookController::class, 'destroy']);
+
+        Route::get(
+            '/my-books',
+            [BookController::class, 'myBooks']
+        );
+
+        Route::post(
+            '/favorites/{book}',
+            [FavoriteController::class, 'store']
+        );
+
+        Route::delete(
+            '/favorites/{book}',
+            [FavoriteController::class, 'destroy']
+        );
+
+        Route::get(
+            '/favorites',
+            [FavoriteController::class, 'index']
+        );
+
+        Route::get(
+            '/conversations',
+            [ConversationController::class, 'index']
+        );
+
+        Route::get(
+            '/conversations/{conversation}',
+            [ConversationController::class, 'show']
+        );
+
+        Route::delete(
+            '/conversations/{conversation}',
+            [ConversationController::class, 'destroy']
+        );
+
+        Route::post(
+            '/conversations/{conversation}/messages',
+            [MessageController::class, 'store']
+        );
+
+        Route::post(
+            '/conversations',
+            [ConversationController::class, 'store']
+        );
+
+        Route::get(
+            '/books/isbn/{isbn}',
+            [IsbnController::class, 'show']
+        );
+
+    });
 
 });
