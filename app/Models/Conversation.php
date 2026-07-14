@@ -37,12 +37,15 @@ class Conversation extends Model
 
     public function userOne()
     {
-        return $this->belongsTo(User::class, 'user_one_id');
+        // withTrashed: se essa pessoa excluir a conta depois, a
+        // conversa continua existindo pro outro usuário (mostrando
+        // "Usuário removido", já que os dados são anonimizados).
+        return $this->belongsTo(User::class, 'user_one_id')->withTrashed();
     }
 
     public function userTwo()
     {
-        return $this->belongsTo(User::class, 'user_two_id');
+        return $this->belongsTo(User::class, 'user_two_id')->withTrashed();
     }
 
     public function messages()
