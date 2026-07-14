@@ -270,7 +270,7 @@
         <p>
             Dúvidas, solicitações sobre seus dados, ou qualquer outra
             questão relacionada a esta política podem ser enviadas para:
-            <strong>[E-MAIL DE CONTATO A DEFINIR]</strong>
+            <strong><a href="mailto:livronet.app@gmail.com">livronet.app@gmail.com</a></strong>
         </p>
 
         <h2>9. Alterações nesta política</h2>
