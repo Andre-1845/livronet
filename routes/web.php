@@ -143,3 +143,11 @@ Route::get('/account/delete/confirm/{id}/{hash}', function (
 
 })->middleware('signed')
     ->name('account.delete.confirm');
+
+// ---------------- PÁGINAS LEGAIS ----------------
+
+Route::get('/privacidade', function () {
+
+    return view('legal.privacy-policy');
+
+})->name('legal.privacy-policy');
