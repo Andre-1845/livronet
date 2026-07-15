@@ -114,7 +114,8 @@ Route::post('/account/delete', function (Request $request) {
     }
 
     return view('account.delete-request-sent');
-});
+
+})->middleware('throttle:6,1'); // mesmo limite de /register, /login e /forgot-password — evita spam do e-mail de confirmação de exclusão
 
 Route::get('/account/delete/confirm/{id}/{hash}', function (
     string $id,
