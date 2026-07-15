@@ -341,6 +341,54 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 
 ---
 
+## v0.9.0 - 2026-07-13
+
+### Painel Administrativo (Filament)
+
+- Instalação e configuração do Filament 3.3 em `/admin`.
+- Restrição de acesso por `users.is_admin` (`FilamentUser::canAccessPanel()`).
+- `BookResource`: CRUD completo com `TrashedFilter` e ações de restaurar/apagar definitivamente.
+- `UserResource`: edição de dados e toggle de `is_admin` (sem campo de senha, sem exclusão de usuário).
+- `ConversationResource`: somente leitura, com relation manager de mensagens (moderação).
+- Menu lateral colapsável (ícone apenas) no desktop.
+
+### Segurança
+
+- Verificação de e-mail obrigatória (`middleware('verified')`) nas rotas de livros, favoritos, conversas e mensagens.
+- Rate limiting (`throttle:6,1`) em `/register`, `/login` e `/forgot-password`.
+- Senha mínima de cadastro elevada de 6 para 8 caracteres.
+
+### Livros
+
+- Soft delete em `books` — excluir um livro não quebra mais conversas antigas.
+- Comando `books:purge-trashed` (`--days`, `--dry-run`) para limpeza definitiva de livros soft-deletados.
+
+### Flutter (livronet_app)
+
+- `main` do app tagueado como `v0.9.0` — checkpoint de produção antes do merge de `livronet-app-dev` (sem mudança de código, só marcação para rollback).
+
+---
+
+## v0.10.0 - 2026-07-14 (em `livronet-dev`, aguardando testes)
+
+### Exclusão de Conta (exigência da Play Store / LGPD)
+
+- `AccountDeletionService`: anonimiza dados pessoais e soft-deleta o usuário (nunca delete real, por causa dos FKs `cascadeOnDelete` em books/conversations/messages).
+- `Book`, `Conversation`, `Message` passam a usar `withTrashed()` nos relacionamentos com `User`, preservando histórico ("Usuário removido").
+- Endpoint autenticado `DELETE /me` (exige senha atual).
+- Fluxo web para usuários deslogados: `GET/POST /account/delete` → e-mail com link assinado (expira em 30 min) → `GET /account/delete/confirm/{id}/{hash}` (idempotente).
+- Rate limiting (`throttle:6,1`) no `POST /account/delete`, alinhado com `/register`, `/login` e `/forgot-password`.
+
+### Legal
+
+- Página de política de privacidade em `/privacidade`, cobrindo dados coletados, cuidado extra com público menor de idade, retenção e direitos LGPD.
+
+### Correções
+
+- Unificado o mínimo de senha do reset (`/reset-password`) para 8 caracteres, igual ao cadastro.
+
+---
+
 ## Próxima Sprint Planejada
 
 ### LIV-090 - ISBN Automático

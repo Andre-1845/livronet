@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\AccountDeletionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -247,6 +248,35 @@ class AuthController extends Controller
 
             'message' => 'E-mail alterado com sucesso. Uma nova confirmação foi enviada.',
 
+        ]);
+    }
+
+    /**
+     * Exclusão de conta pelo próprio app (exigência da Play Store).
+     * Exige a senha atual como confirmação, já que é uma ação
+     * irreversível do ponto de vista do usuário.
+     */
+    public function deleteAccount(
+        Request $request,
+        AccountDeletionService $accountDeletionService
+    ) {
+        $request->validate([
+            'password' => 'required',
+        ]);
+
+        $user = $request->user();
+
+        if (! Hash::check($request->password, $user->password)) {
+
+            return response()->json([
+                'message' => 'Senha inválida.',
+            ], 422);
+        }
+
+        $accountDeletionService->deleteAccount($user);
+
+        return response()->json([
+            'message' => 'Conta excluída com sucesso.',
         ]);
     }
 }
