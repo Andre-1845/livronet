@@ -363,6 +363,10 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 - Soft delete em `books` — excluir um livro não quebra mais conversas antigas.
 - Comando `books:purge-trashed` (`--days`, `--dry-run`) para limpeza definitiva de livros soft-deletados.
 
+### Flutter (livronet_app)
+
+- `main` do app tagueado como `v0.9.0` — checkpoint de produção antes do merge de `livronet-app-dev` (sem mudança de código, só marcação para rollback).
+
 ---
 
 ## v0.10.0 - 2026-07-14 (em `livronet-dev`, aguardando testes)
