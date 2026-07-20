@@ -4,19 +4,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Linhas de idioma de redefinição de senha
+    | Password Reset Language Lines
     |--------------------------------------------------------------------------
     |
-    | Usadas pelo fluxo de "esqueci minha senha" via web (routes/web.php,
-    | __($status)) — sem essa tradução, a tela de erro mostra a chave
-    | crua (ex: "passwords.token") em vez de uma mensagem legível.
+    | The following language lines are the default lines which match reasons
+    | that are given by the password broker for a password update attempt
+    | has failed, such as for an invalid token or invalid new password.
     |
     */
 
-    'reset' => 'Sua senha foi redefinida com sucesso!',
-    'sent' => 'Enviamos por e-mail o link de redefinição de senha!',
+    'password' => 'A senha e a confirmação devem combinar e possuir pelo menos seis caracteres.',
+    'reset' => 'Sua senha foi redefinida!',
+    'sent' => 'Enviamos seu link de redefinição de senha por e-mail!',
     'throttled' => 'Aguarde antes de tentar novamente.',
-    'token' => 'Este link de redefinição de senha é inválido ou já expirou.',
-    'user' => 'Não encontramos nenhum usuário com esse endereço de e-mail.',
+    'token' => 'Este token de redefinição de senha é inválido.',
+    'user' => 'Não encontramos um usuário com esse endereço de e-mail.',
 
 ];
