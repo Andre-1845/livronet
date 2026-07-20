@@ -383,9 +383,45 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 
 - Página de política de privacidade em `/privacidade`, cobrindo dados coletados, cuidado extra com público menor de idade, retenção e direitos LGPD.
 
+### Apoio Voluntário ao Projeto
+
+Flutter
+
+- `SupportScreen`: exibida em 5% das aberturas do app, apenas para usuários já logados e verificados, sempre logo após a resolução do `AuthGate`. Botão de fechar e link externo (fora do app) para a página de apoio — doação totalmente opcional, sem desbloquear nenhuma funcionalidade.
+
+Laravel
+
+- Página pública `/apoie`, sem autenticação e sem coleta de dados, com as formas de doação disponíveis (Pix, Livepix, Apoia.se).
+- `support_page_contents`: o conteúdo da página (textos, chave Pix, links) deixa de ser fixo no código e passa a ser editável pelo painel administrativo.
+
+### Foto de Capa Personalizada
+
+Flutter
+
+- `CreateBookScreen`: opção de tirar foto ou escolher da galeria para usar como capa do livro — para quando o ISBN não é encontrado nas bases consultadas, ou quando o usuário simplesmente prefere usar a foto do próprio exemplar. Substitui a capa automática quando enviada.
+
+Laravel
+
+- O backend já suportava upload de imagem com prioridade sobre a capa automática do ISBN; faltava só a opção no app.
+
+### Localização (pt_BR)
+
+- Mensagens automáticas do Laravel (validação de formulários, autenticação, redefinição de senha) traduzidas com o pacote `lucascudo/laravel-pt-br-localization`.
+- `APP_LOCALE` e `APP_FALLBACK_LOCALE` alterados de `en` para `pt_BR`.
+
+### E-mails Automáticos
+
+- Layout de e-mail próprio (logo + rodapé padronizado do LivroNet), substituindo o tema genérico do Laravel nos e-mails de verificação de conta, redefinição de senha e exclusão de conta.
+- `email_templates`: assunto, corpo e texto do botão de cada e-mail passam a ser editáveis pelo painel administrativo, sem precisar de deploy pra alterar um texto.
+
+### Painel Administrativo (Filament)
+
+- Novo grupo de navegação "Conteúdo do site": recurso para editar os e-mails automáticos (`EmailTemplateResource`) e página de configuração do conteúdo de `/apoie` (`SupportPageSettings`).
+
 ### Correções
 
 - Unificado o mínimo de senha do reset (`/reset-password`) para 8 caracteres, igual ao cadastro.
+- (`livronet_app`) Corrigido erro de validação "boolean" em `accept_trade`/`accept_sale`/`accept_donation` ao cadastrar ou editar um livro com foto de capa: o envio multipart (usado quando há imagem) mandava os booleanos como texto `"true"`/`"false"`, que o Laravel não aceita na regra `boolean` — corrigido para enviar `"1"`/`"0"`.
 
 ---
 
