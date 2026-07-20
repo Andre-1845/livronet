@@ -152,3 +152,14 @@ Route::get('/privacidade', function () {
     return view('legal.privacy-policy');
 
 })->name('legal.privacy-policy');
+
+// ---------------- APOIO AO PROJETO ----------------
+// Pagina estatica de apoio/doacao voluntaria. Sem coleta de dados, sem
+// autenticacao -- so informacao e links externos de doacao (diretriz
+// no 11: doacoes sao opcionais e nao desbloqueiam nada).
+
+Route::get('/apoie', function () {
+
+    return view('apoie');
+
+})->name('apoie');
