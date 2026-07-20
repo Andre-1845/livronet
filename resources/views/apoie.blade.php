@@ -186,45 +186,22 @@
                  alt="LivroNet">
         </div>
 
-        <h1>Apoie o LivroNet</h1>
-        <div class="subtitle">Sua doação é opcional, mas faz diferença.</div>
+        <h1>{{ $content->title }}</h1>
+        <div class="subtitle">{{ $content->subtitle }}</div>
 
         <div class="divider"></div>
 
-        <p>
-            O <strong>LivroNet</strong> nasceu com um objetivo simples:
-            fazer os livros circularem, em vez de ficarem parados numa
-            estante depois que um estudante termina de usá-los. Cada
-            livro doado, trocado ou repassado é um livro a menos
-            comprado do zero, e um livro a mais chegando a quem precisa
-            e talvez não pudesse pagar por ele.
-        </p>
+        {!! $content->intro_text !!}
 
-        <h2>Por que o projeto existe</h2>
-        <p>
-            Livros didáticos e acadêmicos são caros, e boa parte deles é
-            usada por poucos meses antes de ir parar numa caixa
-            esquecida. Ao mesmo tempo, tem sempre um outro estudante
-            precisando exatamente daquele livro. O LivroNet aproxima
-            essas duas pontas — sem cobrar comissão, sem intermediar
-            pagamentos, sem transformar isso em negócio.
-        </p>
-        <p>
-            É um projeto pensado para <strong>educação</strong>,
-            <strong>economia</strong> no bolso de quem estuda e
-            <strong>sustentabilidade</strong> — reduzir desperdício
-            dando mais vida útil a algo que já existe.
-        </p>
+        @if($content->why_it_exists_text)
+            <h2>Por que o projeto existe</h2>
+            {!! $content->why_it_exists_text !!}
+        @endif
 
-        <h2>Por que pedimos apoio</h2>
-        <p>
-            O LivroNet é mantido de forma independente, sem investidores
-            e sem publicidade dentro do app. Os custos de servidor,
-            domínio e manutenção saem do bolso de quem desenvolve o
-            projeto. Doações voluntárias ajudam a manter o app no ar,
-            gratuito e sem anúncios, para todos os estudantes que
-            dependem dele.
-        </p>
+        @if($content->why_we_ask_text)
+            <h2>Por que pedimos apoio</h2>
+            {!! $content->why_we_ask_text !!}
+        @endif
 
         <div class="highlight-box">
             A doação é <strong>100% opcional</strong> e não cria
@@ -234,54 +211,57 @@
             "esse projeto vale a pena continuar existindo".
         </div>
 
-        <h2>Como apoiar</h2>
-        <p>
-            Escolha a forma que preferir. Qualquer valor ajuda.
-        </p>
+        @if($content->pix_key || $content->livepix_url || $content->apoiase_url)
+            <h2>Como apoiar</h2>
+            <p>
+                Escolha a forma que preferir. Qualquer valor ajuda.
+            </p>
 
-        <div class="support-options">
-            <div class="support-card">
-                <h3>Pix</h3>
-                <p>Doação direta, sem taxas de intermediário.</p>
-                <div class="pix-key-box">
-                    {{-- TODO: substituir pela chave Pix real (e-mail, telefone ou chave aleatória) --}}
-                    livronet.app@gmail.com
-                </div>
+            <div class="support-options">
+
+                @if($content->pix_key)
+                    <div class="support-card">
+                        <h3>Pix</h3>
+                        <p>Doação direta, sem taxas de intermediário.</p>
+                        <div class="pix-key-box">
+                            {{ $content->pix_key }}
+                        </div>
+                    </div>
+                @endif
+
+                @if($content->livepix_url)
+                    <div class="support-card">
+                        <h3>Livepix</h3>
+                        <p>Doação rápida via cartão ou Pix, com recibo automático.</p>
+                        <a class="btn" href="{{ $content->livepix_url }}" target="_blank" rel="noopener">
+                            Doar pelo Livepix
+                        </a>
+                    </div>
+                @endif
+
+                @if($content->apoiase_url)
+                    <div class="support-card">
+                        <h3>Apoia.se</h3>
+                        <p>Apoio recorrente mensal, se preferir contribuir sempre.</p>
+                        <a class="btn green" href="{{ $content->apoiase_url }}" target="_blank" rel="noopener">
+                            Apoiar no Apoia.se
+                        </a>
+                    </div>
+                @endif
+
             </div>
+        @endif
 
-            <div class="support-card">
-                <h3>Livepix</h3>
-                <p>Doação rápida via cartão ou Pix, com recibo automático.</p>
-                {{-- TODO: substituir pelo link real da página no Livepix --}}
-                <a class="btn" href="https://livepix.gg/livronet" target="_blank" rel="noopener">
-                    Doar pelo Livepix
-                </a>
-            </div>
-
-            <div class="support-card">
-                <h3>Apoia.se</h3>
-                <p>Apoio recorrente mensal, se preferir contribuir sempre.</p>
-                {{-- TODO: substituir pelo link real da página no Apoia.se --}}
-                <a class="btn green" href="https://apoia.se/livronet" target="_blank" rel="noopener">
-                    Apoiar no Apoia.se
-                </a>
-            </div>
-        </div>
-
-        <h2>Transparência</h2>
-        <p>
-            As doações recebidas são usadas exclusivamente para custear
-            a infraestrutura do LivroNet (servidor, domínio e serviços
-            associados) e sua manutenção contínua. O projeto não possui
-            fins lucrativos e não repassa nem vende dados de quem doa
-            ou de quem usa o app.
-        </p>
+        @if($content->transparency_text)
+            <h2>Transparência</h2>
+            {!! $content->transparency_text !!}
+        @endif
 
         <h2>Dúvidas</h2>
         <p>
             Qualquer pergunta sobre o projeto ou sobre as formas de
             apoio pode ser enviada para:
-            <strong><a href="mailto:livronet.app@gmail.com">livronet.app@gmail.com</a></strong>
+            <strong><a href="mailto:{{ $content->contact_email }}">{{ $content->contact_email }}</a></strong>
         </p>
 
     </div>

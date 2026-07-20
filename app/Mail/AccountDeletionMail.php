@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\EmailTemplate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -16,11 +17,17 @@ class AccountDeletionMail extends Mailable
 
     public function build(): self
     {
+        $template = EmailTemplate::forKey('account_deletion');
+
         return $this
-            ->subject('Confirme a exclusão da sua conta — LivroNet')
-            ->view('emails.account-deletion')
+            ->subject($template->subject)
+            ->view('emails.dynamic')
             ->with([
-                'confirmUrl' => $this->confirmUrl,
+                'subject' => $template->subject,
+                'body' => $template->body,
+                'buttonText' => $template->button_text,
+                'actionUrl' => $this->confirmUrl,
+                'closingText' => $template->closing_text,
             ]);
     }
 }

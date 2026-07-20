@@ -160,6 +160,8 @@ Route::get('/privacidade', function () {
 
 Route::get('/apoie', function () {
 
-    return view('apoie');
+    return view('apoie', [
+        'content' => \App\Models\SupportPageContent::current(),
+    ]);
 
 })->name('apoie');

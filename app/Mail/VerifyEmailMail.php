@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\EmailTemplate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -17,12 +18,17 @@ class VerifyEmailMail extends Mailable
 
     public function build(): self
     {
+        $template = EmailTemplate::forKey('verify_email');
+
         return $this
-            ->subject('Confirme seu e-mail — LivroNet')
-            ->view('emails.verify')
+            ->subject($template->subject)
+            ->view('emails.dynamic')
             ->with([
-                'verificationUrl' => $this->verificationUrl,
-                'userName' => $this->userName,
+                'subject' => $template->subject,
+                'body' => str_replace(':name', $this->userName ?? '', $template->body),
+                'buttonText' => $template->button_text,
+                'actionUrl' => $this->verificationUrl,
+                'closingText' => $template->closing_text,
             ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\EmailTemplate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -18,13 +19,23 @@ class ResetPasswordMail extends Mailable
 
     public function build(): self
     {
+        $template = EmailTemplate::forKey('reset_password');
+
+        $body = str_replace(
+            [':name', ':expire_minutes'],
+            [$this->userName ?? '', (string) $this->expireMinutes],
+            $template->body
+        );
+
         return $this
-            ->subject('Redefinição de senha — LivroNet')
-            ->view('emails.reset-password')
+            ->subject($template->subject)
+            ->view('emails.dynamic')
             ->with([
-                'resetUrl' => $this->resetUrl,
-                'userName' => $this->userName,
-                'expireMinutes' => $this->expireMinutes,
+                'subject' => $template->subject,
+                'body' => $body,
+                'buttonText' => $template->button_text,
+                'actionUrl' => $this->resetUrl,
+                'closingText' => $template->closing_text,
             ]);
     }
 }
