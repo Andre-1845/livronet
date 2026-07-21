@@ -7,21 +7,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>LivroNet - Troque, Doe e Reutilize Livros</title>
+<meta name="description" content="O LivroNet conecta pessoas para trocar, doar e vender livros usados, dando mais vida útil aos livros e facilitando o acesso ao conhecimento.">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="{{ asset('images/livronet_logo_horizontal.png') }}">
+
+{{-- Open Graph: como o link costuma ser compartilhado em grupos de WhatsApp/Telegram,
+     essas tags controlam a prévia (título, descrição e imagem) que aparece lá. --}}
+<meta property="og:type" content="website">
+<meta property="og:title" content="LivroNet - Troque, Doe e Reutilize Livros">
+<meta property="og:description" content="Uma plataforma colaborativa para conectar pessoas, promover o reuso de livros e democratizar o acesso ao conhecimento.">
+<meta property="og:image" content="{{ asset('images/livronet_logo_horizontal.png') }}">
+<meta property="og:url" content="{{ url('/') }}">
+<meta name="twitter:card" content="summary_large_image">
 
 <style>
 
 body{
     margin:0;
-    font-family:Poppins,sans-serif;
+    font-family:Arial,Helvetica,sans-serif;
     background:#f8fafc;
     color:#2d3748;
 }
 
 header{
 
-    background:linear-gradient(135deg,#0B4FA3,#2FAE27);
+    background:linear-gradient(135deg,#003f9e,#3bb11d);
     color:white;
     text-align:center;
     padding:60px 20px;
@@ -54,7 +64,7 @@ display:inline-block;
 padding:16px 30px;
 margin-top:25px;
 background:white;
-color:#0B4FA3;
+color:#003f9e;
 font-weight:bold;
 text-decoration:none;
 border-radius:40px;
@@ -78,7 +88,7 @@ padding:70px 20px;
 
 h2{
 
-color:#0B4FA3;
+color:#003f9e;
 font-size:34px;
 
 }
@@ -110,13 +120,13 @@ box-shadow:0 5px 20px rgba(0,0,0,.08);
 
 .card h3{
 
-color:#2FAE27;
+color:#3bb11d;
 
 }
 
 .apoio{
 
-background:#0B4FA3;
+background:#003f9e;
 color:white;
 text-align:center;
 
@@ -125,14 +135,6 @@ text-align:center;
 .apoio h2{
 
 color:white;
-
-}
-
-.apoio .pix{
-
-font-size:28px;
-font-weight:bold;
-margin:30px 0;
 
 }
 
@@ -145,6 +147,19 @@ padding:40px;
 
 }
 
+footer a{
+
+color:white;
+
+}
+
+footer .links{
+
+margin-top:16px;
+font-size:15px;
+
+}
+
 </style>
 
 </head>
@@ -153,7 +168,7 @@ padding:40px;
 
 <header>
 
-<img src="logo_horizontal.png">
+<img src="{{ asset('images/livronet_logo_horizontal.png') }}" alt="LivroNet">
 
 <h1>Troque. Doe. Reutilize Livros.</h1>
 
@@ -162,7 +177,7 @@ Uma plataforma colaborativa para conectar pessoas,
 promover o reuso de livros e democratizar o acesso ao conhecimento.
 </p>
 
-<a class="botao" href="#">
+<a class="botao" href="https://play.google.com/store/apps/details?id=br.com.livronet.app" target="_blank" rel="noopener">
 Disponível na Google Play
 </a>
 
@@ -257,28 +272,10 @@ Ajuda estudantes a obter materiais com menor custo.
 
 <h2>❤️ Ajude o LivroNet a continuar crescendo</h2>
 
-<p>
+{!! $content->why_we_ask_text !!}
 
-O LivroNet é um projeto independente desenvolvido com o propósito de gerar impacto social.
-
-Os custos de hospedagem, infraestrutura, manutenção e evolução do aplicativo são mantidos de forma voluntária.
-
-Se você acredita nessa iniciativa, considere contribuir com qualquer valor.
-
-Sua ajuda permitirá manter o projeto gratuito e disponível para milhares de pessoas.
-
-</p>
-
-<div class="pix">
-
-Chave PIX<br>
-
-seu-pix@livronet.com.br
-
-</div>
-
-<a class="botao" href="#">
-Contribuir
+<a class="botao" href="{{ route('apoie') }}">
+Ver formas de apoiar
 </a>
 
 </section>
@@ -322,6 +319,12 @@ o LivroNet promove um modelo de consumo mais consciente e sustentável.
 Troque • Doe • Venda • Reutilize Livros<br><br>
 
 Transformando livros esquecidos em novas oportunidades de aprendizado.
+
+<div class="links">
+<a href="{{ route('apoie') }}">Apoie o projeto</a>
+&nbsp;•&nbsp;
+<a href="{{ route('legal.privacy-policy') }}">Política de Privacidade</a>
+</div>
 
 </footer>
 
