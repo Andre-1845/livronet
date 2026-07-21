@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\SupportPageContent;
 use App\Models\User;
 use App\Services\AccountDeletionService;
 use Illuminate\Http\Request;
@@ -7,6 +8,21 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+
+// ---------------- PAGINA INICIAL ----------------
+// Landing page publica em livronet.org -- ate pouco tempo atras a raiz
+// do dominio nao tinha nenhuma rota (caia em 404). Editavel via painel
+// Filament so na parte de apoio (reaproveita SupportPageContent, o
+// mesmo conteudo da pagina /apoie -- evita ter a chave Pix/links
+// duplicados em dois lugares).
+
+Route::get('/', function () {
+
+    return view('landing', [
+        'content' => SupportPageContent::current(),
+    ]);
+
+})->name('landing');
 
 Route::get('/email/verify/{id}/{hash}', function (
     Request $request,
