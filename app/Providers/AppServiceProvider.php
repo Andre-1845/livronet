@@ -6,7 +6,10 @@ use App\Mail\ResetPasswordMail;
 use App\Mail\VerifyEmailMail;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +32,23 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->useBrandedAuthEmails();
+
+        $this->configureRateLimiting();
+    }
+
+    /**
+     * Limite padrao pra toda a API (rotas de auth ja tem throttle mais
+     * apertado especifico em routes/api.php -- isso aqui cobre o resto,
+     * que hoje nao tinha limite nenhum). Aplicado via
+     * bootstrap/app.php -> $middleware->throttleApi().
+     */
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by(
+                $request->user()?->id ?: $request->ip()
+            );
+        });
     }
 
     /**
