@@ -369,7 +369,7 @@ Todas as alterações relevantes do projeto LivroNet serão registradas neste ar
 
 ---
 
-## v0.10.0 - 2026-07-14 (em `livronet-dev`, aguardando testes)
+## v0.10.0 - 2026-07-20
 
 ### Exclusão de Conta (exigência da Play Store / LGPD)
 
@@ -422,6 +422,11 @@ Laravel
 
 - Unificado o mínimo de senha do reset (`/reset-password`) para 8 caracteres, igual ao cadastro.
 - (`livronet_app`) Corrigido erro de validação "boolean" em `accept_trade`/`accept_sale`/`accept_donation` ao cadastrar ou editar um livro com foto de capa: o envio multipart (usado quando há imagem) mandava os booleanos como texto `"true"`/`"false"`, que o Laravel não aceita na regra `boolean` — corrigido para enviar `"1"`/`"0"`.
+
+### Auditoria pré-publicação (Play Store)
+
+- Rate limiting padrão (60 req/min) aplicado em toda a API — antes só as rotas de autenticação tinham throttle.
+- (`livronet_app`) Link para a Política de Privacidade adicionado na tela de Perfil — antes só existia como página web, sem acesso de dentro do app.
 
 ---
 
